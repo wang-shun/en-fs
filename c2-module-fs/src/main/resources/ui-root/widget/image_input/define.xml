@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Template xmlns="http://www.chinacreator.com/c2/ui/template"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.chinacreator.com/c2/ui/template template_config.xsd ">
+    <name>图片上传</name>
+    <description><![CDATA[图片上传,上传成功后可预览]]></description>
+    <excepts>container/toolbar*,container/table*</excepts>
+    <catalog>form-control</catalog>
+    <params>
+        <group name="布局属性">
+            <param id="span" name="占位数" required="false">
+                <description>网格布局中占位数</description>
+                <defaultValue>6</defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+        </group>
+        <group name="HTML属性">
+            <param id="url" name="上传路径" required="false">
+                <description><![CDATA[处理文件上传的服务URL]]></description>
+                <defaultValue><![CDATA[file]]></defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+            <param id="title" name="悬浮提示" required="false">
+                <description><![CDATA[]]></description>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+             <param id="minHeight" name="最小高度" required="false">
+                <description><![CDATA[]]></description>
+                <defaultValue><![CDATA[68]]></defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+            <param id="show" name="可见" >
+                <description><![CDATA[是否为可见状态。可以用表达式和变量。]]></description>
+                <defaultValue><![CDATA[true]]></defaultValue>
+                <editor name="checkboxAndExpr" colSpan="1"></editor>
+            </param>
+        </group>
+        <group name="数据校验">
+            <param id="maxSize" name="文件大小">
+                <description><![CDATA[支持上传的文件的大小，单位:字节，默认值10000000(约10M)]]></description>
+                <defaultValue><![CDATA[10000000]]></defaultValue>
+                <editor name="text">
+                </editor>
+            </param>
+        </group>
+    </params>
+</Template>

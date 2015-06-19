@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form:Form xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dync="http://www.chinacreator.com/platform/mvc/ui/dync" xmlns:form="http://www.chinacreator.com/platform/mvc/form" xmlns:template="http://www.chinacreator.com/c2/ui/template" name="文件列表 " sn="fileManager" type="form">
+  <form:control type="page/normal">
+    <form:attributes source="page/normal">
+      <dync:attribute default="" desc="是否显示页面头部的标题等信息" group="HTML" hidden="false" id="showHead" name="显示标题" required="false" value="true">
+        <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+        <dync:children/>
+      </dync:attribute>
+      <dync:attribute default="" desc="页面头部的标题" group="HTML" hidden="false" id="title" name="标题" required="false" value="文件列表">
+        <dync:render colSpan="2" height="0" multi="false" name="text"/>
+        <dync:children/>
+      </dync:attribute>
+      <dync:attribute default="" desc="页面头部的描述" group="HTML" hidden="false" id="desc" name="描述" required="false" value="所有的文件在这里管理">
+        <dync:render colSpan="2" height="0" multi="false" name="text"/>
+        <dync:children/>
+      </dync:attribute>
+      <dync:attribute default="false" desc="页面侧边是否有padding" group="HTML" hidden="false" id="compact" name="紧凑页面" required="false" value="false">
+        <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+        <dync:children/>
+      </dync:attribute>
+      <dync:attribute default="" desc="数据源加载前" group="事件" hidden="false" id="beforeDataSourceLoad" name="数据源加载前" required="false" value="">
+        <dync:render colSpan="2" height="0" multi="false" name="event">
+          <dync:item name="param" value="$params"/>
+        </dync:render>
+        <dync:children/>
+      </dync:attribute>
+      <dync:attribute default="" desc="页面加载完成事件" group="事件" hidden="false" id="onload" name="页面加载完成" required="false" value="">
+        <dync:render colSpan="2" height="0" multi="false" name="event">
+          <dync:item name="param" value=""/>
+        </dync:render>
+        <dync:children/>
+      </dync:attribute>
+    </form:attributes>
+  </form:control>
+  <form:child xsi:type="form:Group" id="newGroup" name="简单容器(DIV)">
+    <form:control type="container/div">
+      <form:attributes source="container/div"/>
+    </form:control>
+    <form:child xsi:type="form:Group" binding="$model.list" id="list" name="列表型数据源">
+      <form:control type="container/table_jqgrid">
+        <form:attributes source="container/table_jqgrid">
+          <dync:attribute default="" desc="是否展开或者收起控件。可以填写布尔值或者表达式。" group="表格设置" hidden="false" id="collapse" name="展开" required="false" value="false">
+            <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+            <dync:children/>
+          </dync:attribute>
+          <dync:attribute default="" desc="自定义查询按钮事件。为空则触发默认新增事件。" group="功能按钮" hidden="false" id="buttonAddEven" name="新增按钮事件" required="false" value="list_buttonAddEven()">
+            <dync:render colSpan="1" height="0" multi="false" name="event">
+              <dync:item name="param" value=""/>
+            </dync:render>
+            <dync:children/>
+          </dync:attribute>
+        </form:attributes>
+      </form:control>
+      <form:child xsi:type="form:Field" binding="id" id="id" name="元数据id">
+        <form:control type="widget/col_jqgrid">
+          <form:attributes source="widget/col_jqgrid">
+            <dync:attribute id="key" value="true">
+              <dync:render/>
+              <dync:children/>
+            </dync:attribute>
+            <dync:attribute id="hidden" value="true">
+              <dync:render/>
+              <dync:children/>
+            </dync:attribute>
+            <dync:attribute default="left" desc="内容在td内排列的位置" group="基本设置" hidden="false" id="align" name="位置" required="false" value="center">
+              <dync:render colSpan="1" height="0" multi="false" name="select">
+                <dync:item name="左" value="left"/>
+                <dync:item name="中" value="center"/>
+                <dync:item name="右" value="right"/>
+              </dync:render>
+              <dync:children/>
+            </dync:attribute>
+            <dync:attribute default="" desc="列的宽度;如果固定宽度为false,这列的实际宽度按占表格的百分比计算出来" group="基本设置" hidden="false" id="width" name="宽度" required="false" value="100px">
+              <dync:render colSpan="1" height="0" multi="false" name="text"/>
+              <dync:children/>
+            </dync:attribute>
+          </form:attributes>
+        </form:control>
+      </form:child>
+      <form:child xsi:type="form:Field" binding="fileid" id="fileid" name="文件id">
+        <form:control type="widget/col_jqgrid">
+          <form:attributes source="widget/col_jqgrid">
+            <dync:attribute default="" desc="列的宽度;如果固定宽度为false,这列的实际宽度按占表格的百分比计算出来" group="基本设置" hidden="false" id="width" name="宽度" required="false" value="90px">
+              <dync:render colSpan="1" height="0" multi="false" name="text"/>
+              <dync:children/>
+            </dync:attribute>
+          </form:attributes>
+        </form:control>
+      </form:child>
+      <form:child xsi:type="form:Field" binding="name" id="name" name="文件名称">
+        <form:control type="widget/col_jqgrid">
+          <form:attributes source="widget/col_jqgrid">
+            <dync:attribute default="false" desc="是否允许该列被查询。" group="查询设置" hidden="false" id="search" name="查询" required="false" value="true">
+              <dync:render colSpan="1" height="0" multi="false" name="checkbox"/>
+              <dync:children/>
+              <dync:onChange>
+                <template:case value="true">
+                  <template:hide param="searchType" value="false"/>
+                  <template:hide param="searchSelectUrl" value="false"/>
+                  <template:hide param="searchSelectId" value="false"/>
+                  <template:hide param="searchSelectText" value="false"/>
+                  <template:hide param="searchValue" value="false"/>
+                  <template:hide param="searchSopt" value="false"/>
+                  <template:hide param="searchDefaultvalue" value="false"/>
+                  <template:hide param="searchDataInit" value="false"/>
+                </template:case>
+                <template:case value="false">
+                  <template:hide param="searchType" value="true"/>
+                  <template:hide param="searchSelectUrl" value="true"/>
+                  <template:hide param="searchSelectId" value="true"/>
+                  <template:hide param="searchSelectText" value="true"/>
+                  <template:hide param="searchValue" value="true"/>
+                  <template:hide param="searchSopt" value="true"/>
+                  <template:hide param="searchDefaultvalue" value="true"/>
+                  <template:hide param="searchDataInit" value="true"/>
+                </template:case>
+              </dync:onChange>
+            </dync:attribute>
+            <dync:attribute default="" desc="列的宽度;如果固定宽度为false,这列的实际宽度按占表格的百分比计算出来" group="基本设置" hidden="false" id="width" name="宽度" required="false" value="150px">
+              <dync:render colSpan="1" height="0" multi="false" name="text"/>
+              <dync:children/>
+            </dync:attribute>
+          </form:attributes>
+        </form:control>
+      </form:child>
+      <form:child xsi:type="form:Field" binding="mimetype" id="mimetype" name="文件类型">
+        <form:control type="widget/col_jqgrid">
+          <form:attributes source="widget/col_jqgrid">
+            <dync:attribute default="" desc="将替换掉预定格式；可参考[jqGrid自定义格式](http://www.trirand.com/jqgridwiki/doku.php?id=wiki:custom_formatter)。&#xA;&#x9;&#x9;&#x9;@param cellvalue[String] 单元格值。&#xA;&#x9;&#x9;&#x9;@param options[JSON] 表格列选项。&#xA;&#x9;&#x9;&#x9;@param rowObject[JSON] 行数据。&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;@code&#xA;&#x9;&#x9;&#x9;newField8_customFormatter:function (cellvalue, options, rowObject){&#xA;&#x9;&#x9;&#x9;&#x9;return cellvalue+&quot;显示什么我说的算!!&quot;;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;//如果想写自定义按钮事件，可以在&quot;页面js&quot;内写下自己的脚本方法，然后通过ng-click来实现：&#xA;&#x9;&#x9;&#x9;newField5_customFormatter:function(cellvalue,options,rowObject){&#xA;&#x9;&#x9;&#x9;&#x9;return '&lt;button ng-click=functions.myClick(&quot;'+cellvalue+'&quot;)>&lt;i class=&quot;ace-icon fa fa-meh-o&quot;>&lt;/i>&lt;/button>';&#xA;&#x9;&#x9;&#x9;&#x9;//不调用其他方法，也可以用onClick&#xA;&#x9;&#x9;&#x9;&#x9;//return '&lt;button onClick=alert(&quot;hohoHa'+cellvalue+'&quot;)>&lt;i class=&quot;ace-icon fa fa-meh-o&quot;>&lt;/i>&lt;/button>';&#xA;&#x9;&#x9;&#x9;},&#xA;&#x9;&#x9;&#x9;myClick:function(value){&#xA;&#x9;&#x9;&#x9;&#x9;alert(&quot;我的点击事件：&quot;+value);&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;@code&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;@attention 通过自己手写HTML代码事件调用&quot;页面js&quot;的方法时必须加上`functions.`的前缀。  &#xA;&#x9;&#x9;&#x9;通过html内置的事件(onClick)是不能够调用到&quot;页面js&quot;上的方法的,只能通过Angular内置的指令事件(ng-click)调用。  &#xA;&#x9;&#x9;&#x9;当然，如果你不需要调用到&quot;页面js&quot;的方法，还是可以用`onClick`事件的，如：`onClick=alert(&quot;hahaho'+cellvalue+'&quot;)`" group="格式设置" hidden="false" id="customFormatter" name="自定义格式" required="false" value="mimetype_customFormatter(cellvalue,options,rowObject)">
+              <dync:render colSpan="2" height="0" multi="false" name="event">
+                <dync:item name="param" value="cellvalue,options,rowObject"/>
+              </dync:render>
+              <dync:children/>
+            </dync:attribute>
+            <dync:attribute default="" desc="列的宽度;如果固定宽度为false,这列的实际宽度按占表格的百分比计算出来" group="基本设置" hidden="false" id="width" name="宽度" required="false" value="80px">
+              <dync:render colSpan="1" height="0" multi="false" name="text"/>
+              <dync:children/>
+            </dync:attribute>
+            <dync:attribute default="left" desc="内容在td内排列的位置" group="基本设置" hidden="false" id="align" name="位置" required="false" value="center">
+              <dync:render colSpan="1" height="0" multi="false" name="select">
+                <dync:item name="左" value="left"/>
+                <dync:item name="中" value="center"/>
+                <dync:item name="右" value="right"/>
+              </dync:render>
+              <dync:children/>
+            </dync:attribute>
+            <dync:attribute default="false" group="查询设置" id="search" name="查询" value="true">
+              <dync:children/>
+            </dync:attribute>
+          </form:attributes>
+        </form:control>
+      </form:child>
+      <form:child xsi:type="form:Field" binding="filesize" id="filesize" name="文件大小(字节)">
+        <form:control type="widget/col_jqgrid">
+          <form:attributes source="widget/col_jqgrid">
+            <dync:attribute default="" desc="列的宽度;如果固定宽度为false,这列的实际宽度按占表格的百分比计算出来" group="基本设置" hidden="false" id="width" name="宽度" required="false" value="50px">
+              <dync:render colSpan="1" height="0" multi="false" name="text"/>
+              <dync:children/>
+            </dync:attribute>
+            <dync:attribute default="false" group="查询设置" id="search" name="查询" value="true">
+              <dync:children/>
+            </dync:attribute>
+          </form:attributes>
+        </form:control>
+      </form:child>
+      <form:child xsi:type="form:Field" binding="" id="digest" name="操作">
+        <form:control type="widget/col_jqgrid">
+          <form:attributes source="widget/col_jqgrid">
+            <dync:attribute default="" desc="将替换掉预定格式；可参考[jqGrid自定义格式](http://www.trirand.com/jqgridwiki/doku.php?id=wiki:custom_formatter)。&#xA;&#x9;&#x9;&#x9;@param cellvalue[String] 单元格值。&#xA;&#x9;&#x9;&#x9;@param options[JSON] 表格列选项。&#xA;&#x9;&#x9;&#x9;@param rowObject[JSON] 行数据。&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;@code&#xA;&#x9;&#x9;&#x9;newField8_customFormatter:function (cellvalue, options, rowObject){&#xA;&#x9;&#x9;&#x9;&#x9;return cellvalue+&quot;显示什么我说的算!!&quot;;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;//如果想写自定义按钮事件，可以在&quot;页面js&quot;内写下自己的脚本方法，然后通过ng-click来实现：&#xA;&#x9;&#x9;&#x9;newField5_customFormatter:function(cellvalue,options,rowObject){&#xA;&#x9;&#x9;&#x9;&#x9;return '&lt;button ng-click=functions.myClick(&quot;'+cellvalue+'&quot;)>&lt;i class=&quot;ace-icon fa fa-meh-o&quot;>&lt;/i>&lt;/button>';&#xA;&#x9;&#x9;&#x9;&#x9;//不调用其他方法，也可以用onClick&#xA;&#x9;&#x9;&#x9;&#x9;//return '&lt;button onClick=alert(&quot;hohoHa'+cellvalue+'&quot;)>&lt;i class=&quot;ace-icon fa fa-meh-o&quot;>&lt;/i>&lt;/button>';&#xA;&#x9;&#x9;&#x9;},&#xA;&#x9;&#x9;&#x9;myClick:function(value){&#xA;&#x9;&#x9;&#x9;&#x9;alert(&quot;我的点击事件：&quot;+value);&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;@code&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;@attention 通过自己手写HTML代码事件调用&quot;页面js&quot;的方法时必须加上`functions.`的前缀。  &#xA;&#x9;&#x9;&#x9;通过html内置的事件(onClick)是不能够调用到&quot;页面js&quot;上的方法的,只能通过Angular内置的指令事件(ng-click)调用。  &#xA;&#x9;&#x9;&#x9;当然，如果你不需要调用到&quot;页面js&quot;的方法，还是可以用`onClick`事件的，如：`onClick=alert(&quot;hahaho'+cellvalue+'&quot;)`" group="格式设置" hidden="false" id="customFormatter" name="自定义格式" required="false" value="digest_customFormatter(cellvalue,options,rowObject)">
+              <dync:render colSpan="2" height="0" multi="false" name="event">
+                <dync:item name="param" value="cellvalue,options,rowObject"/>
+              </dync:render>
+              <dync:children/>
+            </dync:attribute>
+            <dync:attribute default="left" desc="内容在td内排列的位置" group="基本设置" hidden="false" id="align" name="位置" required="false" value="center">
+              <dync:render colSpan="1" height="0" multi="false" name="select">
+                <dync:item name="左" value="left"/>
+                <dync:item name="中" value="center"/>
+                <dync:item name="右" value="right"/>
+              </dync:render>
+              <dync:children/>
+            </dync:attribute>
+            <dync:attribute default="" desc="列的宽度;如果固定宽度为false,这列的实际宽度按占表格的百分比计算出来" group="基本设置" hidden="false" id="width" name="宽度" required="false" value="80px">
+              <dync:render colSpan="1" height="0" multi="false" name="text"/>
+              <dync:children/>
+            </dync:attribute>
+          </form:attributes>
+        </form:control>
+      </form:child>
+      <form:child xsi:type="form:Field" binding="visitCount" id="visitCount" name="仿问次数">
+        <form:control type="widget/col_jqgrid">
+          <form:attributes source="widget/col_jqgrid">
+            <dync:attribute default="" desc="列的宽度;如果固定宽度为false,这列的实际宽度按占表格的百分比计算出来" group="基本设置" hidden="false" id="width" name="宽度" required="false" value="80px">
+              <dync:render colSpan="1" height="0" multi="false" name="text"/>
+              <dync:children/>
+            </dync:attribute>
+            <dync:attribute default="left" desc="内容在td内排列的位置" group="基本设置" hidden="false" id="align" name="位置" required="false" value="center">
+              <dync:render colSpan="1" height="0" multi="false" name="select">
+                <dync:item name="左" value="left"/>
+                <dync:item name="中" value="center"/>
+                <dync:item name="右" value="right"/>
+              </dync:render>
+              <dync:children/>
+            </dync:attribute>
+            <dync:attribute default="false" group="查询设置" id="search" name="查询" value="true">
+              <dync:children/>
+            </dync:attribute>
+          </form:attributes>
+        </form:control>
+      </form:child>
+      <form:child xsi:type="form:Group" id="toolbar_table" name="toolbar_table">
+        <form:control type="container/toolbar_table">
+          <form:attributes source="container/toolbar_table"/>
+        </form:control>
+        <form:child xsi:type="form:Field" id="buttonAdd" name="新增">
+          <form:control type="widget/button_a_table">
+            <form:attributes source="widget/button_a_table">
+              <dync:attribute id="icon" value="fa-plus">
+                <dync:render/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute id="iconColor" value="purple">
+                <dync:render/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="" desc="按钮事件" group="事件设置" hidden="false" id="click" name="单击事件" required="false" value="buttonAdd_click()">
+                <dync:render colSpan="1" height="0" multi="false" name="event">
+                  <dync:item name="params" value=""/>
+                </dync:render>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="custom" desc="按钮的事件类型，如果不是自定义，则有默认的调用事件。" group="事件设置" hidden="false" id="clickType" name="事件类型" required="false" value="add">
+                <dync:render colSpan="2" height="0" multi="false" name="select">
+                  <dync:item name="自定义" value="custom"/>
+                  <dync:item name="添加" value="add"/>
+                  <dync:item name="编辑" value="edit"/>
+                  <dync:item name="查看" value="get"/>
+                  <dync:item name="删除" value="delete"/>
+                  <dync:item name="查找" value="search"/>
+                  <dync:item name="刷新" value="refrash"/>
+                </dync:render>
+                <dync:children/>
+                <dync:onChange>
+                  <template:case value="custom">
+                    <template:hide param="click" value="false"/>
+                  </template:case>
+                  <template:case value="add">
+                    <template:set param="icon" value="fa-plus"/>
+                    <template:set param="iconColor" value="purple"/>
+                    <template:hide param="click" value="true"/>
+                  </template:case>
+                  <template:case value="edit">
+                    <template:set param="icon" value="fa-pencil"/>
+                    <template:set param="iconColor" value="blue"/>
+                    <template:hide param="click" value="true"/>
+                  </template:case>
+                  <template:case value="get">
+                    <template:set param="icon" value="fa-bars"/>
+                    <template:set param="iconColor" value="grey"/>
+                    <template:hide param="click" value="true"/>
+                  </template:case>
+                  <template:case value="delete">
+                    <template:set param="icon" value="fa-trash-o"/>
+                    <template:set param="iconColor" value="red"/>
+                    <template:hide param="click" value="true"/>
+                  </template:case>
+                  <template:case value="search">
+                    <template:set param="icon" value="fa-search"/>
+                    <template:set param="iconColor" value="orange"/>
+                    <template:hide param="click" value="true"/>
+                  </template:case>
+                  <template:case value="refrash">
+                    <template:set param="icon" value="fa-refresh"/>
+                    <template:set param="iconColor" value="green"/>
+                    <template:hide param="click" value="true"/>
+                  </template:case>
+                </dync:onChange>
+              </dync:attribute>
+            </form:attributes>
+          </form:control>
+        </form:child>
+        <form:child xsi:type="form:Field" id="buttonEdit" name="编辑">
+          <form:control type="widget/button_a_table">
+            <form:attributes source="widget/button_a_table">
+              <dync:attribute id="clickType" value="edit">
+                <dync:render/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute id="icon" value="fa-pencil">
+                <dync:render/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute id="iconColor" value="blue">
+                <dync:render/>
+                <dync:children/>
+              </dync:attribute>
+            </form:attributes>
+          </form:control>
+        </form:child>
+        <form:child xsi:type="form:Field" id="buttonDel" name="删除">
+          <form:control type="widget/button_a_table">
+            <form:attributes source="widget/button_a_table">
+              <dync:attribute id="icon" value="fa-trash-o">
+                <dync:render/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute id="iconColor" value="red">
+                <dync:render/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="custom" desc="按钮的事件类型，如果不是自定义，则有默认的调用事件。" group="事件设置" hidden="false" id="clickType" name="事件类型" required="false" value="delete">
+                <dync:render colSpan="2" height="0" multi="false" name="select">
+                  <dync:item name="自定义" value="custom"/>
+                  <dync:item name="添加" value="add"/>
+                  <dync:item name="编辑" value="edit"/>
+                  <dync:item name="查看" value="get"/>
+                  <dync:item name="删除" value="delete"/>
+                  <dync:item name="查找" value="search"/>
+                  <dync:item name="刷新" value="refrash"/>
+                </dync:render>
+                <dync:children/>
+                <dync:onChange>
+                  <template:case value="custom">
+                    <template:hide param="click" value="false"/>
+                  </template:case>
+                  <template:case value="add">
+                    <template:set param="icon" value="fa-plus"/>
+                    <template:set param="iconColor" value="purple"/>
+                    <template:hide param="click" value="true"/>
+                  </template:case>
+                  <template:case value="edit">
+                    <template:set param="icon" value="fa-pencil"/>
+                    <template:set param="iconColor" value="blue"/>
+                    <template:hide param="click" value="true"/>
+                  </template:case>
+                  <template:case value="get">
+                    <template:set param="icon" value="fa-bars"/>
+                    <template:set param="iconColor" value="grey"/>
+                    <template:hide param="click" value="true"/>
+                  </template:case>
+                  <template:case value="delete">
+                    <template:set param="icon" value="fa-trash-o"/>
+                    <template:set param="iconColor" value="red"/>
+                    <template:hide param="click" value="true"/>
+                  </template:case>
+                  <template:case value="search">
+                    <template:set param="icon" value="fa-search"/>
+                    <template:set param="iconColor" value="orange"/>
+                    <template:hide param="click" value="true"/>
+                  </template:case>
+                  <template:case value="refrash">
+                    <template:set param="icon" value="fa-refresh"/>
+                    <template:set param="iconColor" value="green"/>
+                    <template:hide param="click" value="true"/>
+                  </template:case>
+                </dync:onChange>
+              </dync:attribute>
+            </form:attributes>
+          </form:control>
+        </form:child>
+        <form:child xsi:type="form:Field" id="buttonSearch" name="查找">
+          <form:control type="widget/button_a_table">
+            <form:attributes source="widget/button_a_table">
+              <dync:attribute id="clickType" value="search">
+                <dync:render/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute id="icon" value="fa-search">
+                <dync:render/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute id="iconColor" value="orange">
+                <dync:render/>
+                <dync:children/>
+              </dync:attribute>
+            </form:attributes>
+          </form:control>
+        </form:child>
+        <form:child xsi:type="form:Field" id="buttonRefresh" name="刷新">
+          <form:control type="widget/button_a_table">
+            <form:attributes source="widget/button_a_table">
+              <dync:attribute id="clickType" value="refrash">
+                <dync:render/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute id="icon" value="fa-refresh">
+                <dync:render/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute id="iconColor" value="green">
+                <dync:render/>
+                <dync:children/>
+              </dync:attribute>
+            </form:attributes>
+          </form:control>
+        </form:child>
+      </form:child>
+    </form:child>
+  </form:child>
+  <form:datasources>
+    <form:datasource xsi:type="form:Inputs"/>
+    <form:datasource xsi:type="form:PagingDataSource" id="list" name="列表型数据源" elementType="entity:com.chinacreator.c2.fs.FileMetadata" pageSize="10"/>
+  </form:datasources>
+  <form:scripts>digest_customFormatter:function(cellvalue,options,rowObject){
+	return '&lt;a  ng-click=&quot;functions.downloadFile(\''+rowObject.id+'\',\''+rowObject.name+'\')&quot; href=\&quot;javascript:void(0)\&quot; \&quot;>下载&lt;/a>&amp;nbsp;&amp;nbsp;&lt;a href=\&quot;javascript:void(0)\&quot; ng-click=&quot;functions.copyToClipboard(\''+rowObject.id+'\',\''+rowObject.name+'\')&quot;>复制路径&lt;/a>'; 
+},
+copyToClipboard:function(id,name){
+	Modal.open(&quot;f/copyDilog&quot;,{downPath:'file/'+id});
+},
+downloadFile:function(id,name){
+
+	//检查附件状态
+	$http({method : &quot;GET&quot;,url : &quot;fileutil/check/&quot;+id})
+	.success(function(data,response, status, headers, config){
+		if(data&amp;&amp;true==data.exist){
+			var downloadIframe=document.getElementById(&quot;downloadIframe&quot;);
+			if(!downloadIframe){
+				downloadIframe=document.createElement(&quot;iframe&quot;);
+				downloadIframe.id=&quot;downloadIframe&quot;;
+				downloadIframe.name=&quot;downloadIframe&quot;;
+				downloadIframe.style.display=&quot;none&quot;;
+				document.body.appendChild(downloadIframe);
+			}
+			downloadIframe.src=&quot;fileutil/download/&quot;+id;
+		}else{
+			Messenger.post({type:'error',message:'文件不存在，请联系管理员!'});
+		}
+	});
+	
+},
+
+showImage:function(id,name){
+	//检查附件状态
+	$http({method : &quot;GET&quot;,url : &quot;fileutil/check/&quot;+id})
+	.success(function(data,response, status, headers, config){
+		if(data&amp;&amp;true==data.exist){
+			Modal.open(&quot;f/viewImageDialog&quot;,{imagePath:'file/'+id});
+		}else{
+			Messenger.post({type:'error',message:'图片不存在，无法预览!'});
+		}
+	});
+},
+mimetype_customFormatter:function(cellvalue,options,rowObject){
+	var fileName=rowObject.name;
+	if(fileName){
+		if(cellvalue&amp;&amp;cellvalue.indexOf(&quot;image&quot;)!=-1){
+			return '&lt;i title=\&quot;单击预览图片\&quot; class=\&quot;ace-icon fa fa-image fa-2x\&quot;  ng-click=\&quot;functions.showImage(\''+rowObject.id+'\',\''+rowObject.name+'\');\&quot;>&lt;/i>';
+		}
+		
+		var suffix=fileName.substr(fileName.lastIndexOf(&quot;.&quot;),fileName.length);
+		if(&quot;.xlsx&quot;==suffix||&quot;.xls&quot;==suffix||&quot;.xlsm&quot;==suffix){
+			return '&lt;i class=\&quot;ace-icon fa fa-file-excel-o fa-2x\&quot;>&lt;/i>';
+		}
+		if(&quot;.rar&quot;==suffix||&quot;.zip&quot;==suffix){
+			return '&lt;i class=\&quot;ace-icon fa  fa-file-zip-o fa-2x\&quot;>&lt;/i>';
+		}
+		if(&quot;.txt&quot;==suffix||&quot;.sql&quot;==suffix){
+			return '&lt;i class=\&quot;ace-icon fa  fa-file-text fa-2x\&quot;>&lt;/i>';
+		}
+	}
+	return cellvalue;
+},
+
+filesize_customFormatter:function(cellvalue,options,rowObject){
+	
+},
+
+list_buttonAddEven:function(){
+	alert(1);
+},
+
+buttonAdd_click:function(){
+	
+},
+
+buttonSearch1_click:function(rowId,rowData,tableData){
+	$view.list.setParams({name:'1.jpg'});
+	$view.list.refresh();
+}</form:scripts>
+  <form:htmls></form:htmls>
+</form:Form>

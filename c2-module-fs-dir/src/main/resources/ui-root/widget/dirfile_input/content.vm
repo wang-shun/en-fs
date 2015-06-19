@@ -1,0 +1,19 @@
+<div id="formGroup-${ele.id}" class="form-group col-sm-$!{param.span}" #attr("ng-show='${param.show}'" $!{param.show}) ng-class="{'has-error':mainForm.$!{ele.id}_text.$invalid}">
+		#if("$!{ele.name}"!="")
+	    	<label for="${ele.id}" class="control-label al-control-label $!{param.lableClass}"  style="width:$!{param.lableWidth}px;$!{param.lableStyle}">${ele.name}</label>
+	    #end
+	    #set ($marginLeft= $tools.parseInt($!{param.lableWidth})+10)
+	    <div style="margin-left: ${marginLeft}px;">
+	    			<input c2-single-upload-dir-file id="${ele.id}" name="${ele.id}" type="file" process="${param.process}"
+					#attr("ng-disabled='${param.disabled}'" $!{param.disabled})
+					#attr("target-url='$param.url'" $!{param.url})
+					#attr("on-success='functions.${param.onSuccess}'" $!{param.onSuccess})
+					#attr("on-error='functions.${param.onError}'" $!{param.onError})
+					#attr("allow=${param.allow}" $!{param.allow})
+					#attr("deny=${param.deny}" $!{param.deny})
+					#attr("is-single=${param.isSingle}" $!{param.isSingle})
+					#if($!{param.autoSubmit}=="true")auto-submit#end
+					#if($!{param.showRemoveButton}=="true")show-remove-button#end
+					/>
+	    </div>
+</div>

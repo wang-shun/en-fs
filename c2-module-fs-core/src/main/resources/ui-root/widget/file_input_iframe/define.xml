@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Template xmlns="http://www.chinacreator.com/c2/ui/template"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.chinacreator.com/c2/ui/template template_config.xsd ">
+    <name>Iframe单文件上传</name>
+    <description><![CDATA[文件上传,对应HTML中`<input type="file"/>`标签。]]></description>
+    <excepts>container/toolbar*,container/table*</excepts>
+    <catalog>form-control</catalog>
+    <params>
+        <group name="布局属性">
+            <param id="span" name="占位数" required="false">
+                <description>网格布局中占位数</description>
+                <defaultValue>6</defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+            <param id="lableWidth" name="lable宽度" required="false">
+                <description>lable宽度(px)</description>
+                <defaultValue>75</defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+        </group>
+        <group name="HTML属性">
+        	<param id="autoSubmit" name="自动提交" required="false">
+				<description>是否在选中文件后立即开始上传</description>
+				<defaultValue>true</defaultValue>
+				<editor name="checkbox"></editor>
+			</param>
+            <param id="process" name="上传处理器" required="true">
+                <description><![CDATA[文件上传处理器名,默认数据厍和目录结合方式]]></description>
+                <defaultValue><![CDATA[dbdir]]></defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+            <param id="show" name="可见" >
+                <description><![CDATA[是否为可见状态。可以用表达式和变量。]]></description>
+                <defaultValue><![CDATA[true]]></defaultValue>
+                <editor name="checkboxAndExpr" colSpan="1"></editor>
+            </param>
+            <param id="disabled" name="禁用" required="false">
+				<description>是否禁用控件，可以用表达式和变量。</description>
+				<defaultValue>false</defaultValue>
+				<editor name="checkboxAndExpr"></editor>
+			</param>
+			<param id="showRemoveButton" name="显示清除按钮" required="false">
+				<description>是否在上传控件右侧显示清除按钮(在有文件被选中的时候)。</description>
+				<defaultValue>true</defaultValue>
+				<editor name="checkbox"></editor>
+			</param>
+			<param id="lableClass" name="自定义class" required="true">
+                <description>lable的class属性。多个class使用空格间隔。</description>
+                <defaultValue></defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+            <param id="lableStyle" name="自定义style" required="true">
+                <description>lable的style属性。多个样式请使用";"间隔。</description>
+                <defaultValue></defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+        </group>
+        <group name="数据校验">
+            <param id="allow" name="允许类型">
+                <description><![CDATA[允许上传的文件类型，不写代表支持所有类型，内容是一个JS的字符串数组，例：["jpg","txt"]]]></description>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <editor name="text">
+                </editor>
+            </param>
+            <param id="deny" name="禁止类型">
+                <description><![CDATA[禁止上传的文件类型，不写代表支持所有类型，格式与"允许类型"一致]]></description>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <editor name="text">
+                </editor>
+            </param>
+            <param id="maxSize" name="单个文件大小">
+                <description><![CDATA[支持上传的文件的大小，单位:字节，默认值10485760(10M)]]></description>
+                <defaultValue><![CDATA[10485760]]></defaultValue>
+                <editor name="text">
+                </editor>
+            </param>
+        </group>
+        <group name="事件">
+            <param id="onSuccess" name="上传成功">
+                <description><![CDATA[文件上传成功后触发]]></description>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <editor name="event">
+                    <item name="params" value="data"></item>
+                </editor>
+            </param>
+            <param id="onError" name="上传失败">
+                <description><![CDATA[文件上传失败后触发]]></description>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <editor name="event">
+                	<item name="params" value="data"></item>
+                </editor>
+            </param>
+        </group>
+    </params>
+    
+    <interfaces>
+    	<interface name="setTargetUrl">
+    		<desc><![CDATA[设置文件上传的URL
+    		]]></desc>
+    	</interface>
+    	<interface name="submit">
+    		<desc><![CDATA[开始文件上传
+    		]]></desc>
+    	</interface>
+    </interfaces>
+</Template>

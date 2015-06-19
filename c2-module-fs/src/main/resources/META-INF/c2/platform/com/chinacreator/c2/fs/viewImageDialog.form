@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form:Form xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dync="http://www.chinacreator.com/platform/mvc/ui/dync" xmlns:form="http://www.chinacreator.com/platform/mvc/form" name="图片预览" sn="viewImageDialog" type="form">
+  <form:control type="page/modal">
+    <form:attributes source="page/modal">
+      <dync:attribute default="" desc="页面加载完成事件" group="事件" hidden="false" id="onload" name="页面加载完成" required="false" value="page_onload()">
+        <dync:render colSpan="2" height="0" multi="false" name="event">
+          <dync:item name="param" value=""/>
+        </dync:render>
+        <dync:children/>
+      </dync:attribute>
+      <dync:attribute default="" desc="页面头部的标题" group="HTML" hidden="false" id="title" name="标题" required="false" value="图片预览">
+        <dync:render colSpan="2" height="0" multi="false" name="text"/>
+        <dync:children/>
+      </dync:attribute>
+    </form:attributes>
+  </form:control>
+  <form:child xsi:type="form:Group" id="newGroupId" name="新分组">
+    <form:control type="container/div">
+      <form:attributes source="container/div">
+        <dync:attribute default="12" desc="网格布局中占位数" group="HTML配置" hidden="false" id="span" name="占位数" required="true" value="12">
+          <dync:render colSpan="1" height="0" multi="false" name="text"/>
+          <dync:children/>
+        </dync:attribute>
+        <dync:attribute default="0" desc="网格布局中的偏移数" group="HTML配置" hidden="false" id="offset" name="偏移" required="false" value="0">
+          <dync:render colSpan="1" height="0" multi="false" name="text"/>
+          <dync:children/>
+        </dync:attribute>
+        <dync:attribute default="" desc="填写变量或者表达式控制控件是否折叠。变量和表达式的值必须为布尔类型。&#xA;                @attention 当填写变量时，变量必须有初始值，如果变量未定义则无效。定义为`true`或者`false`之后，可以通过修改该变量的值来控制控件的折叠；&#xA;                &#x9;如果填写表达式，表达式中要有变量（当然你也可以直接写`true`,`false`或者是`1==1`。没问题，但是有意义吗！冏rz），通过改变变量的值改变表达式的结果。比如：你想让只有权限大于10的，才能显示，否则控件必须折叠。假设`right`为权限值，该属性可设置为`right&lt;=10`。&#xA;                @attention 变量可以从数据源中直接拿，或者在页面的*载入事件*中进行初始化。" group="HTML配置" hidden="false" id="collapse" name="变量折叠" required="false" value="">
+          <dync:render colSpan="2" height="0" multi="false" name="text"/>
+          <dync:children/>
+        </dync:attribute>
+        <dync:attribute default="false" desc="容器在页面初始化完成时是否折叠。当你不需要通过变量来控制控件折叠的话，只需要使用这个属性就够了。可以通过控件方法`show();hide();toggle()`控制容器的折叠状态。&#xA;                `false`表示展开控件（默认）。&#xA;                `true`表示折叠控件。&#xA;                @attention *变量折叠*和*折叠默认值*是或（||）的关系。当两个属性都设了值时，只要有一个为折叠（true），则另一个怎么设置都无效。所以当需要设置*变量折叠*属性进行容器折叠状态控制时，折叠默认值必须设置为`false`。同理，当*变量折叠*属性的值为`true`时,通过控件方法`show();hide();toggle()`是怎么也改变不了容器的折叠状态的。" group="HTML配置" hidden="false" id="defaultCollapse" name="折叠默认值" required="false" value="false">
+          <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+          <dync:children/>
+        </dync:attribute>
+        <dync:attribute default="false" desc="内部是否有边距" group="HTML配置" hidden="false" id="nopadding" name="无内边距" required="false" value="false">
+          <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+          <dync:children/>
+        </dync:attribute>
+        <dync:attribute default="" desc="在容器内部直接嵌入自定义的HTML。当控件满足不了页面需求时，可以通过这个去嵌入一段自定义的HTML代码。&#xA;                点击属性框右边按钮，会自动跳转到*HTML片段*的页签，并在页签内生成一段包裹脚本。需要自定义的HTML代码写在脚本内。如果还需要脚本控制元素，也可在模版内部写自己的脚本。&#xA;                @code&#xA;                &lt;script type=&quot;text/ng-template&quot; id=&quot;newGroup1_html&quot;>&#xA;&#x9;&#x9;&#x9;&#x9;我的地盘我做主！&#xA;&#x9;&#x9;&#x9;&#x9;&lt;script>&#xA;&#x9;&#x9;&#x9;&#x9;alert(&quot;oye!&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/script>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/script>&#xA;                @code&#xA;                @attention 如果定义了该属性，那么在容器中放置任何其他控件都会被忽略。" group="高级自定义" hidden="false" id="html" name="自定义HTML" required="false" value="">
+          <dync:render colSpan="2" height="0" multi="false" name="html"/>
+          <dync:children/>
+        </dync:attribute>
+        <dync:attribute default="" desc="可以添加任意class，多个class样式用空格分开" group="高级自定义" hidden="false" id="cssClass" name="自定义class" required="false" value="">
+          <dync:render colSpan="2" height="0" multi="false" name="text"/>
+          <dync:children/>
+        </dync:attribute>
+        <dync:attribute default="" desc="可以添加任意style样式,必须遵循style样式格式：&quot;color:red;backgroud-color:blue;&quot;。" group="高级自定义" hidden="false" id="style" name="自定义style" required="false" value="">
+          <dync:render colSpan="2" height="0" multi="false" name="text"/>
+          <dync:children/>
+        </dync:attribute>
+      </form:attributes>
+    </form:control>
+    <form:child xsi:type="form:Group" id="newGroup" name="简单容器(DIV)">
+      <form:control type="container/div">
+        <form:attributes source="container/div">
+          <dync:attribute default="" desc="在容器内部直接嵌入自定义的HTML。当控件满足不了页面需求时，可以通过这个去嵌入一段自定义的HTML代码。&#xA;                点击属性框右边按钮，会自动跳转到*HTML片段*的页签，并在页签内生成一段包裹脚本。需要自定义的HTML代码写在脚本内。如果还需要脚本控制元素，也可在模版内部写自己的脚本。&#xA;                @code&#xA;                &lt;script type=&quot;text/ng-template&quot; id=&quot;newGroup1_html&quot;>&#xA;&#x9;&#x9;&#x9;&#x9;我的地盘我做主！&#xA;&#x9;&#x9;&#x9;&#x9;&lt;script>&#xA;&#x9;&#x9;&#x9;&#x9;alert(&quot;oye!&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/script>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/script>&#xA;                @code&#xA;                @attention 如果定义了该属性，那么在容器中放置任何其他控件都会被忽略。" group="高级自定义" hidden="false" id="html" name="自定义HTML" required="false" value="newGroup_html">
+            <dync:render colSpan="2" height="0" multi="false" name="html"/>
+            <dync:children/>
+          </dync:attribute>
+        </form:attributes>
+      </form:control>
+    </form:child>
+  </form:child>
+  <form:datasources>
+    <form:datasource xsi:type="form:Inputs"/>
+  </form:datasources>
+  <form:scripts>
+
+page_onload:function(){
+	$scope.imagePath=$params.imagePath;
+}</form:scripts>
+  <form:htmls>&lt;script type=&quot;text/ng-template&quot; id=&quot;newGroup_html&quot;>
+	&lt;img src=&quot;{{imagePath}}&quot;>&lt;/img>
+&lt;/script></form:htmls>
+</form:Form>

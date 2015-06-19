@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.fs.FileMetadataMapper">	
+
+<!-- ElementID:column_sql,Generated=false -->
+<sql id="column_sql">
+		  td_c2_file_metadata.id_ ,
+		  td_c2_file_metadata.fileid ,
+		  td_c2_file_metadata.name ,
+		  td_c2_file_metadata.mimetype ,
+		  td_c2_file_metadata.filesize ,
+		  td_c2_file_metadata.digest ,
+		  td_c2_file_metadata.visit_count 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=false -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and td_c2_file_metadata.id_ = #{id}</if>
+	    <if test="fileid != null">and td_c2_file_metadata.fileid = #{fileid}</if>
+	    <if test="name != null">and td_c2_file_metadata.name = #{name}</if>
+	    <if test="mimetype != null">and td_c2_file_metadata.mimetype = #{mimetype}</if>
+	    <if test="filesize != null">and td_c2_file_metadata.filesize = #{filesize}</if>
+	    <if test="digest != null">and td_c2_file_metadata.digest = #{digest}</if>
+	    <if test="visitCount != null">and td_c2_file_metadata.visit_count = #{visitCount}</if>
+</sql>
+
+
+<!-- ElementID:FileMetadataResult,Generated=false -->
+<resultMap id="FileMetadataResult" type="com.chinacreator.c2.fs.FileMetadata">
+	<id property="id" column="id_"/>
+	<result property="fileid" column="fileid"/>
+	<result property="name" column="name"/>
+	<result property="mimetype" column="mimetype"/>
+	<result property="filesize" column="filesize"/>
+	<result property="digest" column="digest"/>
+	<result property="visitCount" column="visit_count"/>
+</resultMap>
+
+
+<!-- ElementName:cache,Generated=true -->
+<cache/>
+
+<!-- ElementID:insert,Generated=false -->
+<insert id="insert" parameterType="com.chinacreator.c2.fs.FileMetadata">
+	insert into td_c2_file_metadata(
+	         <if test="id != null">id_</if>
+	         <if test="fileid != null">,fileid</if>
+	         <if test="name != null">,name</if>
+	         <if test="mimetype != null">,mimetype</if>
+	         <if test="filesize != null">,filesize</if>
+	         <if test="digest != null">,digest</if>
+	         <if test="visitCount != null">,visit_count</if>
+	 	 	 )
+	 values (
+	         <if test="id != null">#{id,jdbcType=CHAR}</if>
+	         <if test="fileid != null">,#{fileid,jdbcType=CHAR}</if>
+	         <if test="name != null">,#{name,jdbcType=VARCHAR}</if>
+	         <if test="mimetype != null">,#{mimetype,jdbcType=VARCHAR}</if>
+	         <if test="filesize != null">,#{filesize,jdbcType=NUMERIC}</if>
+	         <if test="digest != null">,#{digest,jdbcType=VARCHAR}</if>
+	         <if test="visitCount != null">,#{visitCount,jdbcType=NUMERIC}</if>
+	 	 	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.fs.FileMetadata" resultType="int">
+	select count(*) from td_c2_file_metadata 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=false -->
+<update id="update" parameterType="com.chinacreator.c2.fs.FileMetadata">
+	update td_c2_file_metadata
+<set>
+	<if test="fileid != null">fileid=#{fileid,jdbcType=CHAR},</if>
+	<if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
+	<if test="mimetype != null">mimetype=#{mimetype,jdbcType=VARCHAR},</if>
+	<if test="filesize != null">filesize=#{filesize,jdbcType=NUMERIC},</if>
+	<if test="digest != null">digest=#{digest,jdbcType=VARCHAR},</if>
+	<if test="visitCount != null">visit_count=#{visitCount,jdbcType=NUMERIC}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id_ = #{id}</when>
+        <otherwise>and id_ = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:delete,Generated=false -->
+<delete id="delete" parameterType="com.chinacreator.c2.fs.FileMetadata">
+    delete from td_c2_file_metadata where 1=1 and id_ = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=false -->
+<select id="select" parameterType="com.chinacreator.c2.fs.FileMetadata" resultMap="FileMetadataResult">
+	select 
+		<include refid="column_sql"/>
+	    from td_c2_file_metadata 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=false -->
+<insert id="insertBatch" parameterType="list">
+	insert into td_c2_file_metadata (id_,fileid,name,mimetype,filesize,digest,visit_count) 
+<foreach collection="list" item="entity" index="index" separator="union all">
+		select 
+		#{entity.id,jdbcType = CHAR},
+		#{entity.fileid,jdbcType = CHAR},
+		#{entity.name,jdbcType = VARCHAR},
+		#{entity.mimetype,jdbcType = VARCHAR},
+		#{entity.filesize,jdbcType = NUMERIC},
+		#{entity.digest,jdbcType = VARCHAR},
+		#{entity.visitCount,jdbcType = NUMERIC}
+		from dual
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=false -->
+<delete id="deleteBatch" parameterType="List">
+	delete from td_c2_file_metadata where id_ in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.id}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:updateBatch,Generated=false -->
+<update id="updateBatch" parameterType="com.chinacreator.c2.fs.FileMetadata">
+	<foreach collection="list" item="entity" separator=";">
+			update td_c2_file_metadata
+	<set>
+	<if test="entity.fileid != null">fileid= #{entity.fileid,jdbcType=CHAR},</if>
+	<if test="entity.name != null">name= #{entity.name,jdbcType=VARCHAR},</if>
+	<if test="entity.mimetype != null">mimetype= #{entity.mimetype,jdbcType=VARCHAR},</if>
+	<if test="entity.filesize != null">filesize= #{entity.filesize,jdbcType=NUMERIC},</if>
+	<if test="entity.digest != null">digest= #{entity.digest,jdbcType=VARCHAR},</if>
+	<if test="entity.visitCount != null">visit_count= #{entity.visitCount,jdbcType=NUMERIC}</if>
+	</set>
+		<where>
+			<choose>
+				<when test="id != null">and id_ = #{id}</when>
+				<otherwise>and id_ = </otherwise>
+			</choose>
+		</where>
+	</foreach>
+</update>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="FileMetadataResult">
+	select 
+		<include refid="column_sql"/>
+	    from td_c2_file_metadata 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:selectMany,Generated=false -->
+<select id="selectMany" parameterType="list" resultMap="FileMetadataResult">
+select 
+	<include refid="column_sql"/> 
+	from td_c2_file_metadata 
+	where td_c2_file_metadata.id_ in (
+<foreach collection="list" item="entity" separator="intersect">
+		select 
+		td_c2_file_metadata.id_
+	    from td_c2_file_metadata 
+		 <where>
+	        <if test="entity.id != null">and td_c2_file_metadata.id_ = #{entity.id}</if>
+	        <if test="entity.fileid != null">and td_c2_file_metadata.fileid = #{entity.fileid}</if>
+	        <if test="entity.name != null">and td_c2_file_metadata.name = #{entity.name}</if>
+	        <if test="entity.mimetype != null">and td_c2_file_metadata.mimetype = #{entity.mimetype}</if>
+	        <if test="entity.filesize != null">and td_c2_file_metadata.filesize = #{entity.filesize}</if>
+	        <if test="entity.digest != null">and td_c2_file_metadata.digest = #{entity.digest}</if>
+	        <if test="entity.visitCount != null">and td_c2_file_metadata.visit_count = #{entity.visitCount}</if>
+		</where>
+</foreach>
+)
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.String" resultMap="FileMetadataResult">
+	select 
+		<include refid="column_sql"/>
+	    from td_c2_file_metadata 
+		 where td_c2_file_metadata.id_ = #{id,jdbcType=CHAR}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.fs.FileMetadata" resultMap="FileMetadataResult">
+	select 
+		<include refid="column_sql"/>
+	    from td_c2_file_metadata 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+</mapper>

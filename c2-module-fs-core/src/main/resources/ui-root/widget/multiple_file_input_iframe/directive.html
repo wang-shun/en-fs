@@ -1,0 +1,53 @@
+	<div class="message-attachment clearfix">
+														<div class="attachment-title">
+															<span class="blue bolder bigger-110">{{title}}</span>
+															&nbsp;
+															<span class="grey">({{fileList.length}} files)</span>
+																
+															</span>
+															
+															<li  class="ace-icon glyphicon glyphicon-plus fileinput-button">
+																	
+															</li>
+														</div>
+														<ul class="attachment-list pull-left list-unstyled">
+															<li ng-repeat="file in fileList">
+																<a href="#" class="attached-file">
+																	<i class="ace-icon fa fa-file-o bigger-110"></i>
+																	<span class="attached-name">{{file.name}}</span>
+																</a>
+					
+																<span class="action-buttons">
+																	<a href="javascript:void(0)" ng-if="file.isDown">
+																		<i class="ace-icon fa fa-download bigger-125 blue"></i>
+																	</a>
+					
+																	<a href="javascript:void(0)" ng-if="file.isDelete" ng-click="deleteFile(file.domId)">
+																		<i class="ace-icon glyphicon glyphicon-remove red"></i>
+																	</a>
+																</span>
+															</li>
+														</ul>
+					
+													
+													</div>
+													<style type="text/css">
+														
+														.fileinput-button {
+															position: relative;
+															overflow: hidden;
+															display: inline-block;
+														}
+														
+														.file-input{
+															position: absolute;
+															top: 0;
+															right: 0;
+															margin: 0;
+															opacity: 0;
+															-ms-filter: 'alpha(opacity=0)';
+															font-size: 200px;
+															direction: ltr;
+															cursor: pointer;
+														}
+													</style>
