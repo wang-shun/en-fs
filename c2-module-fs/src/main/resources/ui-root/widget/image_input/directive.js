@@ -130,7 +130,16 @@ return {
 						}
 
 						deferred.done(function(result) {
-							$scope.binding=result;
+							var reusltObj=undefined;
+							try{
+								reusltObj=$.parseJSON(result);
+							}catch(e){}
+							
+							if(reusltObj){
+								$scope.binding=reusltObj.path;
+							}else{
+								$scope.binding=result;
+							}
 							$scope.$apply();
 						}).fail(function(result) {
 							alert("There was an error");
