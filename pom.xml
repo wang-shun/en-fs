@@ -14,5 +14,16 @@
   		<module>c2-module-fs</module>
   		<module>c2-module-fs-dir</module>
   	</modules>
-
+<distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>deployment</name>
+            <url>http://172.16.25.142:80/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>deployment</name>
+            <url>http://172.16.25.142:80/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
