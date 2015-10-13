@@ -1,10 +1,10 @@
 <div class="form-group col-sm-$!{param.span}">
-	<span #id($!{ele.id}) c2-image-input class="profile-picture" style="width:100%" binding="$!{ele.binding}" 
+	<span #id($!{ele.id}) c2-image-input class="profile-picture" style="width:$!{param.width};height:$!{param.height}" binding="$!{ele.binding}"
 	 	 #attr("max-size='$param.maxSize'" $!{param.maxSize})
 	     #attr("target-url='$param.url'" $!{param.url})
 		 #attr("on-success='functions.${param.success}'" $!{param.success})
 		 #attr("on-error='functions.${param.error}'" $!{param.error})
 		 >
-	    <img  ng-src="{{$state.$!{ele.id}.imgUrl}}" alt="$!{param.title}" class="img-responsive" style="width:100%;"/>
+	    <img  ng-src="{{$state.$!{ele.id}.imgUrl}}" alt="$!{param.title}" class="img-responsive" style="width:100%;height:100%"/>
 	</span>
 </div>

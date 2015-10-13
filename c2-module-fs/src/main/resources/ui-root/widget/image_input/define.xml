@@ -25,9 +25,14 @@
                 <defaultValue><![CDATA[]]></defaultValue>
                 <editor name="text" colSpan="1"></editor>
             </param>
-             <param id="minHeight" name="最小高度" required="false">
+             <param id="width" name="宽度" required="false">
                 <description><![CDATA[]]></description>
-                <defaultValue><![CDATA[68]]></defaultValue>
+                <defaultValue><![CDATA[100%]]></defaultValue>
+                <editor name="text" colSpan="1"></editor>
+             </param>
+             <param id="height" name="高度" required="false">
+                <description><![CDATA[]]></description>
+                <defaultValue><![CDATA[100%]]></defaultValue>
                 <editor name="text" colSpan="1"></editor>
             </param>
             <param id="show" name="可见" >
