@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>c2-module-fs-core</artifactId>
 	<name>[C2-Module]:文件存储基础模块</name>
-	<version>1.0.4</version>
+	<version>1.0.5</version>
 
 	<parent>
 		<groupId>com.chinacreator.c2</groupId>

@@ -28,7 +28,9 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
  return {
  	scope:{
  		onSuccess:'&',
- 		onError:'&'
+ 		onError:'&',
+		allow:'@',
+		deny:'@'
  	},
     controller: function($scope,$attrs){
     	
