@@ -76,14 +76,17 @@ public class IframeUploadController {
     /**
      * 文件批量上传
      * @param request   请求对象
-     * @param id        控件id
+     * @param controlId 控件id
      * @param callback  上传成功回调函数
      * @return Object   返回回调js
      * @throws IOException
      */
     @RequestMapping(value="{process}/upload",method = RequestMethod.POST)
-    public Object uploadFile(HttpServletRequest request,@PathVariable String process,@RequestParam("controlId") String controlId)
+    public Object uploadFile(MultipartHttpServletRequest request,@PathVariable String process,String controlId)
             throws IOException {
+    	
+    	
+    	HashMap<String,Object> resultObj=new HashMap<String, Object>();
     	
     	try{
 
@@ -125,41 +128,31 @@ public class IframeUploadController {
         		HashMap<String,Object> reData=new HashMap<String, Object>();
         		reData.put("errorMsg","单个文件大小超过限制！");
         		reData.put("files",validateList);
-        		
-        		HashMap<String,Object> d=new HashMap<String, Object>();
-        		d.put("data",reData);
-        		String jsonStr=JSON.toJSONString(d,SerializerFeature.DisableCircularReferenceDetect);
-        		return new ResponseFactory().createResponseBodyHtml("<script type=\"text/javascript\">" +
-        				"var scope=parent.angular.element(\"#"+controlId+"\").scope();" +
-        				"scope.$view."+controlId+".$scope.errorCallback("+jsonStr+");</script>");
+        		resultObj.put("data",reData);
+        	}else{
+            	Result uploadResult=uploadProcess.processUpload(fileInputList,request.getParameterMap());
+            	resultObj.put("data",uploadResult);
         	}
 
-        	
-        	Result uploadResult=uploadProcess.processUpload(fileInputList,request.getParameterMap());
-        	
-    		HashMap<String,Object> d=new HashMap<String, Object>();
-    		d.put("data",uploadResult);
-    		String jsonStr=JSON.toJSONString(d,SerializerFeature.DisableCircularReferenceDetect);
+    	}catch(Exception e1){
+    		e1.printStackTrace();
+    	
+    		HashMap<String,Object> reData=new HashMap<String, Object>();
+    		reData.put("errorMsg",e1.getMessage());
+    		resultObj.put("data",reData);
+    	}
+    	
+    	//处理平台web控件上传
+		if(StringUtils.isNotEmpty(controlId)){
+    		String jsonStr=JSON.toJSONString(resultObj,SerializerFeature.DisableCircularReferenceDetect);
     		
     		//上传成功
     		return new ResponseFactory().createResponseBodyHtml("<script type=\"text/javascript\">" +
     				"var scope=parent.angular.element(\"#"+controlId+"\").scope();" +
     				"scope.$view."+controlId+".$scope.successCallback("+jsonStr+");</script>");
-    		
-    	}catch(Exception e1){
-    		e1.printStackTrace();
-    		
-    		HashMap<String,Object> reData=new HashMap<String, Object>();
-    		reData.put("errorMsg",e1.getMessage());
-    		
-    		HashMap<String,Object> d=new HashMap<String, Object>();
-    		d.put("data",reData);
-    		String jsonStr=JSON.toJSONString(d,SerializerFeature.DisableCircularReferenceDetect);
-    		//上传失败
-    		return new ResponseFactory().createResponseBodyHtml("<script type=\"text/javascript\">" +
-    				"var scope=parent.angular.element(\"#"+controlId+"\").scope();" +
-    				"scope.$view."+controlId+".$scope.errorCallback("+jsonStr+");</script>");
-    	}
+		}else{
+			return new ResponseFactory().createResponseBodyJSONObject(resultObj);
+		}
     }
     
 

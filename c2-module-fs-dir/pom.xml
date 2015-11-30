@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.chinacreator.c2</groupId>
 	<artifactId>c2-module-fs-dir</artifactId>
-	<version>1.0.4</version>
+	<version>1.0.5</version>
 
 	<parent>
 		<groupId>com.chinacreator.c2</groupId>
@@ -33,7 +33,7 @@
     <dependency>
 			<groupId>com.chinacreator.c2</groupId>
 			<artifactId>c2-module-fs-core</artifactId>
-			<version>1.0.4</version>
+			<version>1.0.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
