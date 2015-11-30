@@ -235,7 +235,7 @@ public class IframeUploadController {
 	        return null;
 	        
     	}catch(Exception e){
-    		return new ResponseFactory().createResponseBodyHtml("<script type=\"text/javascript\">alert('"+e.getMessage()+"');</script>");
+    		return new ResponseFactory().createResponseBodyException(e);
     	}finally{
     		if(null!=is){
     			is.close();
@@ -365,7 +365,7 @@ public class IframeUploadController {
 	        return null;
 	        
     	}catch(Exception e){
-    		return new ResponseFactory().createResponseBodyHtml("<script type=\"text/javascript\">alert('"+e.getMessage()+"');</script>");
+    		return new ResponseFactory().createResponseBodyException(e);
     	}finally{
     		
     		if(null!=stream){
