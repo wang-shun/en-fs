@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -234,8 +236,10 @@ public class IframeUploadController {
 	        
 	        return null;
 	        
+    	}catch(FileNotExsitException fe){
+    		return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
     	}catch(Exception e){
-    		return new ResponseFactory().createResponseBodyException(e);
+            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
     	}finally{
     		if(null!=is){
     			is.close();
@@ -364,8 +368,10 @@ public class IframeUploadController {
 	        LOGGER.debug("writeSize:"+writeSize+"  pos+writeSize："+(writeSize+pos)+" 实际总大小:"+downResult.getFileMetadata().getFilesize());
 	        return null;
 	        
+    	}catch(FileNotExsitException fe){
+    		return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
     	}catch(Exception e){
-    		return new ResponseFactory().createResponseBodyException(e);
+            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
     	}finally{
     		
     		if(null!=stream){
