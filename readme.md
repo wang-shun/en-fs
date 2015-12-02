@@ -19,7 +19,7 @@
 	</dependency>
 ```
 
-[点击查看升级日志](CHANGELOG.md)
+[点击查看升级日志](changelog.md)
 
 ## 使用
 
