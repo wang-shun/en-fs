@@ -5,13 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 	  <groupId>com.chinacreator.c2</groupId>
     <artifactId>c2-module-fs</artifactId>
-    <version>1.1.8</version>
     <name>[C2-Module]:文件系统</name>
     
     <parent>
       <groupId>com.chinacreator.c2</groupId>
         <artifactId>c2-module-fs-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.8</version>
     </parent>
 
     <dependencies>

@@ -3,12 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.chinacreator.c2</groupId>
 	<artifactId>c2-module-fs-dir</artifactId>
-	<version>1.0.5</version>
 
 	<parent>
 		<groupId>com.chinacreator.c2</groupId>
 			<artifactId>c2-module-fs-parent</artifactId>
-			<version>1.0.0</version>
+			<version>1.1.8</version>
 	</parent>
 
 	<dependencies>
