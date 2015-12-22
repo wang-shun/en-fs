@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -77,16 +75,16 @@ public class IframeUploadController {
     
     /**
      * 文件批量上传
-     * @param request   请求对象
-     * @param controlId 控件id
+     * @param request    请求对象
+     * @param controlId  控件id
+     * @param instanceId 实例id  
      * @param callback  上传成功回调函数
-     * @return Object   返回回调js
+     * @return Object   返回回调js或json数据
      * @throws IOException
      */
     @RequestMapping(value="{process}/upload",method = RequestMethod.POST)
-    public Object uploadFile(MultipartHttpServletRequest request,@PathVariable String process,String controlId)
+    public Object uploadFile(MultipartHttpServletRequest request,@PathVariable String process,String controlId,String instanceId)
             throws IOException {
-    	
     	
     	HashMap<String,Object> resultObj=new HashMap<String, Object>();
     	
@@ -97,7 +95,6 @@ public class IframeUploadController {
         	MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         	//文件列表
         	Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-        	LinkedList<FileMetadata> resultList=new LinkedList<FileMetadata>();
         	
         	//验证文件大小 
         	List<FileInput> fileInputList=new ArrayList<FileInput>();
@@ -132,7 +129,8 @@ public class IframeUploadController {
         		reData.put("files",validateList);
         		resultObj.put("data",reData);
         	}else{
-            	Result uploadResult=uploadProcess.processUpload(fileInputList,request.getParameterMap());
+            	@SuppressWarnings("unchecked")
+				Result uploadResult=uploadProcess.processUpload(fileInputList,request.getParameterMap());
             	resultObj.put("data",uploadResult);
         	}
 
@@ -146,17 +144,22 @@ public class IframeUploadController {
     	
     	//处理平台web控件上传
 		if(StringUtils.isNotEmpty(controlId)){
+			
     		String jsonStr=JSON.toJSONString(resultObj,SerializerFeature.DisableCircularReferenceDetect);
     		
-    		//上传成功
+    		//实例id,解决多$view集成时id冲突,同时兼容只有controlId参数情况
+    		String filter="#"+controlId;
+    		if(StringUtils.isNotEmpty(instanceId)){
+    			filter="[name='instanceId'][value='"+instanceId+"']";
+    		}
+    		
     		return new ResponseFactory().createResponseBodyHtml("<script type=\"text/javascript\">" +
-    				"var scope=parent.angular.element(\"#"+controlId+"\").scope();" +
+    				"var scope=parent.angular.element(\""+filter+"\").scope();" +
     				"scope.$view."+controlId+".$scope.successCallback("+jsonStr+");</script>");
 		}else{
 			return new ResponseFactory().createResponseBodyJSONObject(resultObj);
 		}
     }
-    
 
     /**
      * 下载附件，返回统一二进制流，不会被浏览器自动识别

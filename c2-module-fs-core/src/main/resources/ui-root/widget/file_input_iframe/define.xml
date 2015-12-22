@@ -95,12 +95,32 @@
     </params>
     
     <interfaces>
+    	<interface name="reset">
+    		<desc><![CDATA[重置选中的文件
+    		]]></desc>
+    	</interface>
+    	
+    	<interface name="setParams">
+    		<desc><![CDATA[设置文件上传的参数
+    		]]></desc>
+    	</interface>
+    	
+    	<interface name="getValue">
+    		<desc><![CDATA[获取控件值
+    		]]></desc>
+    	</interface>
+    	
     	<interface name="setTargetUrl">
     		<desc><![CDATA[设置文件上传的URL
     		]]></desc>
     	</interface>
+    	
     	<interface name="submit">
     		<desc><![CDATA[开始文件上传
+    		]]></desc>
+    	</interface>
+    	<interface name="setProcess">
+    		<desc><![CDATA[设置文件上传处理器
     		]]></desc>
     	</interface>
     </interfaces>

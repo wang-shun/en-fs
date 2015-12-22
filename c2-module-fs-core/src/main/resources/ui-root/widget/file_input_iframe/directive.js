@@ -2,24 +2,31 @@ var C2SingleUploadFileIframe = function (scope, element, attrs) {
     this.$dom = element;
     this.$scope = scope;
     this.attrs = attrs;
+    this.params=undefined;
 };
 
 C2SingleUploadFileIframe.prototype = {
+	getDom:function(){
+		return this.$dom;
+	},
     upload: function (scEvent,erEvent){
         this.$scope.upload(scEvent,erEvent);
     },
-    getSize:function(){
-    	var f=$("#"+this.attrs.id).val();
-		if(undefined!=f||""!=f){
-			return 1;
-		}
-		return 0;
+    getValue:function(){
+    	return this.$scope.formObj.find("input[c2-single-upload-file-iframe]").val();
     },
-    setDirPath:function(path){
-    	if(angular.isUndefined(path)||""==path) return;
-    	var formObj=$("#upload_form_"+this.attrs.id);
-    	var dirPathInput=formObj.find("#dirPath");
-    	dirPathInput.val(path);
+    setProcess:function(process){
+    	var submitUrl="iframefile/"+process+"/upload";
+    	this.$scope.formObj.attr("action",submitUrl);
+    },
+    setTargetUrl:function(url){
+    	this.$scope.formObj.attr("action",url);
+    },
+    setParams:function(params){
+    	this.params=params;
+    },
+    reset:function(){
+    	this.$scope.formObj.find("input[c2-single-upload-file-iframe]").val("");
     }
 };
 
@@ -41,9 +48,12 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
     	
     	$scope.successCallback=function(data){
     		
+    		var form=FormContainerFactory.findForm($scope);
+    		var groupDom=form.mainForm.getDom().find("#formGroup-"+directiveId);
+    		
     		$scope.uploading=false;
     		
-    		$("#formGroup-"+directiveId).find(".message-loading-overlay").remove();
+    		groupDom.find(".message-loading-overlay").remove();
     		
     		if($scope.successEvent){
     			$scope.successEvent(data.data);
@@ -56,9 +66,12 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
     	
     	$scope.errorCallback=function(data){
     		
+    		var form=FormContainerFactory.findForm($scope);
+    		var groupDom=form.mainForm.getDom().find("#formGroup-"+directiveId);
+    		
     		$scope.uploading=false;
     		
-    		$("#formGroup-"+directiveId).find(".message-loading-overlay").remove();
+    		groupDom.find(".message-loading-overlay").remove();
     		
     		if($scope.errorEvent){
     			$scope.errorEvent(data.data);
@@ -70,16 +83,38 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
     	}
     	
     	$scope.upload=function(scEvent,erEvent){
+    		var form=FormContainerFactory.findForm($scope);
+    		var fileDom=form.mainForm.getDom().find("input[c2-single-upload-file-iframe][name="+directiveId+"]");
+    		
+    		//提交前验证
+    		if(fileDom.length>1){
+    			Messenger.post({type:'error',message:"【"+directiveId+"】控件ID冲突，请检查表单控件ID唯一性！"});
+    			return;
+    		}
     		
     		if($scope.uploading){
     			Messenger.post({type:'error',message:'正在上传,请耐心等待!'});
     			return;
     		}
     		
-    		//提交前验证
-			if($("#"+directiveId).val()==undefined||$("#"+directiveId).val()==""){
-				Messenger.post({type:'error',message:'附件不能为空！'});
+			if(fileDom.val()==undefined||fileDom.val()==""){
+				Messenger.post({type:'error',message:"附件不能为空！"});
 				return;
+			}
+
+			//准备动态参数
+	    	var c2SingleUploadFileIframe=form[directiveId];
+			if(c2SingleUploadFileIframe.params instanceof Object){
+				for (name in c2SingleUploadFileIframe.params) {
+					if(c2SingleUploadFileIframe.params.hasOwnProperty(name)){
+						var f=$scope.formObj.find("#"+name);
+						if(f.length>0){
+							f.val(c2SingleUploadFileIframe.params[name]);	
+						}else{
+							$scope.formObj.append("<input type=\"hidden\" id=\""+name+"\" name=\""+name+"\" value=\""+c2SingleUploadFileIframe.params[name]+"\">");
+						}
+					}
+				}
 			}
 			
 			//js动态注册事件
@@ -92,14 +127,15 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
     		
     		$scope.uploading=true;
     		
-    		$("#formGroup-"+directiveId).append("<div  style=\"filter: alpha(opacity=50); opacity: 0.5; background-color: #000;\" class=\"message-loading-overlay\"><i class=\"fa-spin ace-icon fa fa-spinner orange2 bigger-160\"></i></div>");
-    		
+    		var groupDom=form.mainForm.getDom().find("#formGroup-"+directiveId);
+    		groupDom.append("<div style=\"filter: alpha(opacity=50); opacity: 0.5; background-color: #000;\" class=\"message-loading-overlay\"><i class=\"fa-spin ace-icon fa fa-spinner orange2 bigger-160\"></i></div>");
     		$scope.formObj.submit();
-    		
     	}
 	},
  	compile:function($element,$attrs){
  		return function($scope,$element,$attrs){
+ 			
+ 			var instanceId=$attrs.id+"_"+Math.random();
  			var submitUrl="iframefile/"+$attrs.process+"/upload";
  			var iframeObj;
  			var formObj;
@@ -128,15 +164,15 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
         	
  			var iframeId="upload_iframe_"+$attrs.id;
  			var formId="upload_form_"+$attrs.id;
-    		if($("#"+iframeId).length>0){
-    			iframeObj=$("#"+iframeId);
+    		if($element.parent().find("#"+iframeId).length>0){
+    			iframeObj=$element.parent().find("#"+iframeId);
     		}else{
     			iframeObj=$("<iframe name=\""+iframeId+"\" id=\""+iframeId+"\" style=\"display:none\"></iframe>");
     			$element.after(iframeObj);
     		}
     		
-    		if($("#"+formId).length>0){
-    			formObj=$("#"+formId);
+    		if($element.parent().find("#"+formId).length>0){
+    			formObj=$element.parent().find("#"+formId);
     			formObj.empty();
     		}else{
     			formObj=$("<form action=\""+submitUrl+"\" id=\""+formId+"\" name=\""+formId+"\" encType=\"multipart/form-data\"  method=\"post\" target=\""+iframeId+"\">" +
@@ -146,6 +182,7 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
     		}
     		
 			formObj.append("<input type=\"hidden\" name=\"controlId\" value=\""+$attrs.id+"\">");
+			formObj.append("<input type=\"hidden\" name=\"instanceId\" value=\""+instanceId+"\">");
 			
 			if(!angular.isUndefined($attrs.maxSize)){
 				formObj.append("<input type=\"hidden\" id=\"maxSize\" name=\"maxSize\" value=\""+$attrs.maxSize+"\">");
