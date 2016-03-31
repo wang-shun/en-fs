@@ -7,4 +7,6 @@ public interface Constants {
 	}
 	
 	String IFRAME_FILE_PREFIX="iframefile/";
+	
+	String CHUNK_FILE_PREFIX="chunkfile/";
 }
