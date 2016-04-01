@@ -86,13 +86,14 @@
                 <description><![CDATA[文件上传成功后触发]]></description>
                 <defaultValue><![CDATA[]]></defaultValue>
                 <editor name="event">
-                    <item name="params" value="data, status, headers, config"></item>
+                    <item name="params" value="data,file"></item>
                 </editor>
             </param>
             <param id="error" name="上传失败">
                 <description><![CDATA[文件上传失败后触发]]></description>
                 <defaultValue><![CDATA[]]></defaultValue>
                 <editor name="event">
+                    <item name="params" value="file,errmsg"></item>
                 </editor>
             </param>
         </group>

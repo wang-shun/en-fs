@@ -126,7 +126,11 @@ directives.directive('c2FileInputChunk', ['$rootScope','FormContainerFactory','M
     		
     		var cancel=function(){
     			$scope.chunkUpLoader.stop(true);
-    			messenger.hide();
+    			if(undefined!=messenger){
+    				messenger.hide();
+    			}
+    			var groupDom=form.mainForm.getDom().find("#formGroup-"+$attrs.id);
+    			groupDom.find(".message-loading-overlay").remove();
     		}
     		this.cancel=cancel;
     		
@@ -325,7 +329,7 @@ directives.directive('c2FileInputChunk', ['$rootScope','FormContainerFactory','M
 		    					if($.inArray(file.chunk+"",scope.uploadeChunks)==-1){
 		    						deferred.resolve();
 		    					}else{
-		    						console.log("跳过分片:"+file.chunk);
+		    						//console.log("跳过分片:"+file.chunk);
 		    						deferred.reject();
 		    					}
 		    			        return deferred.promise();
@@ -414,6 +418,7 @@ directives.directive('c2FileInputChunk', ['$rootScope','FormContainerFactory','M
 			    		});
 			    		
 			    		chunkUpLoader.on('uploadSuccess', function (file,response) {
+			    			
 			    		    controller.updateProgress(1);
 			    		    
 			    		    //已经上传完成
@@ -422,7 +427,7 @@ directives.directive('c2FileInputChunk', ['$rootScope','FormContainerFactory','M
 			    		    	controller.hideProgress();
 			    		    	
     		     		    	if(angular.isFunction(scope.onSuccess)){
-    		     		    		scope.onSuccess({data:response.data, status:response.status, headers:response.headers, config:response.config});
+    		     		    		scope.onSuccess({data:response.data, file:file});
     				     		}
 			    		    	return;
 			    		    }
@@ -437,23 +442,23 @@ directives.directive('c2FileInputChunk', ['$rootScope','FormContainerFactory','M
 	    			                fileName:file.name,
 	    			                _t:Math.random()
 	    			            },
-	    			            success: function(response){
+	    			            success: function(response,arg1,arg2){
 	    			            	controller.hideProgress();
 	    		     		    	if(angular.isFunction(scope.onSuccess)){
-	    		     		    		scope.onSuccess({data:response.data, status:response.status, headers:response.headers, config:response.config});
+	    		     		    		scope.onSuccess({data:response.data, file:file});
 	    				     		}
 	    			            },
 	    			            error:function(response){
 	    			            	controller.hideProgress();
 	    		      		    	if(angular.isFunction(scope.onError)){
-	    			      		    	scope.onError(response);
+	    			      		    	scope.onError({file:file,errmsg:file.statusText});
 	    			      		    }
 	    			            }
 	    			        });
 			    		});
 			    		
 			    		chunkUpLoader.onUploadProgress = function( file, percentage ) {
-			    			console.log("percentage:"+percentage);
+			    			//console.log("percentage:"+percentage);
 			    			controller.updateProgress(percentage);
 			    		};
 			    		
@@ -469,19 +474,24 @@ directives.directive('c2FileInputChunk', ['$rootScope','FormContainerFactory','M
 			    			
 			    			//将uuid写入cookie，以便断点续传
 			    			var file=this.getFiles()[0];
-			    			controller.setCookie(attrs.id+"_"+file.md5Str,this.option("formData").guid);
+			    			
+			    			if(file.md5Str){
+			    				controller.setCookie(attrs.id+"_"+file.md5Str,this.option("formData").guid);
+			    			}
 			    		});
 			    		
 			    		
-			    		chunkUpLoader.on( 'uploadError',function(file,arg2){
+			    		chunkUpLoader.on( 'uploadError',function(f,errmsg){
 			    			
 			    			controller.hideProgress();
 			    			
 			    			//将uuid写入cookie，以便断点续传
-			    			controller.setCookie(attrs.id+"_"+file.md5Str,this.option("formData").guid);
+			    			if(f.md5Str){
+			    				controller.setCookie(attrs.id+"_"+f.md5Str,this.option("formData").guid);
+			    			}
 			    			
 		      		    	if(angular.isFunction(scope.onError)){
-			      		    	scope.onError();
+			      		    	scope.onError({file:f,errmsg:errmsg});
 			      		    }
 				    		return false;
 			    		});
@@ -501,7 +511,7 @@ directives.directive('c2FileInputChunk', ['$rootScope','FormContainerFactory','M
 				    		return invalid;
 			    		});
 			    		
-			    		chunkUpLoader.on('error',function(eType,arg2,arg3){
+			    		chunkUpLoader.on('error',function(eType){
 			    			
 			    			controller.hideProgress();
 			    			
