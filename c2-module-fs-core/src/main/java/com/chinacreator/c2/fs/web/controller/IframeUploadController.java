@@ -195,27 +195,32 @@ public class IframeUploadController {
 	        //处理断点下载
 	        LOGGER.debug( "request.getHeader(\"Range\")=" + request.getHeader("Range" ));
 	        
-	        long pos = 0; 
-    		long fileLength=downResult.getFileMetadata().getFilesize();
+    		Long fileLength=downResult.getFileMetadata().getFilesize();
+    		if(null==fileLength) fileLength=0l;
+    		long posStart = 0;
+    		long posEnd=fileLength==0?0:fileLength-1;
     		if (null!=request.getHeader( "Range")) { // 客户端请求的下载的文件块的开始字节
     			response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
-                try {
-                    pos = Long.parseLong(request.getHeader("Range").replaceAll("bytes=", "").replaceAll("-", ""));    
+    			try {
+                	String []rangeStr=request.getHeader("Range").replaceAll("bytes=","").split("-");
+                	posStart = Long.parseLong(rangeStr[0]);
+                	posEnd = Long.parseLong(rangeStr[1]);
                 } catch (NumberFormatException e) {  
-                    pos = 0;    
+                	posStart = 0;  
+                	posEnd=fileLength==0?0:fileLength-1;
                 }
     		}
 	        
 	        response.addHeader( "Content-Disposition" ,  "attachment; filename="  + java.net.URLEncoder.encode(downResult.getFileMetadata().getName(), "UTF-8")); 
 	        response.setContentType("application/octet-stream");
-	        response.setHeader("Content-Length",(fileLength-pos)+"");
-	        response.setHeader("Accept-Ranges", "bytes"); 
-	        String contentRange = new StringBuffer("bytes ").append(pos+"").append("-").append((fileLength - 1)+"").append("/").append(fileLength+"").toString();
+	        response.setHeader("Content-Length",(posEnd-posStart+1)+"");
+	        response.setHeader("Accept-Ranges", "bytes");
+	        String contentRange = new StringBuffer("bytes ").append(posStart+"").append("-").append(posEnd+"").append("/").append(fileLength+"").toString();
 	        response.setHeader("Content-Range", contentRange);
 	        LOGGER.debug("Content-Range:"+contentRange);
 	
 	        is=downResult.getInputStream();
-	        is.skip(pos);
+	        is.skip(posStart);
 	        
 	        OutputStream stream = response.getOutputStream();
 	
@@ -235,7 +240,7 @@ public class IframeUploadController {
 	
 	        stream.flush();
 	        
-	        LOGGER.debug("writeSize:"+writeSize+"  pos+writeSize："+(writeSize+pos)+" 实际总大小:"+downResult.getFileMetadata().getFilesize());
+	        LOGGER.debug("writeSize:"+writeSize+",实际总大小:"+downResult.getFileMetadata().getFilesize());
 	        
 	        return null;
 	        
@@ -330,28 +335,33 @@ public class IframeUploadController {
 	        LOGGER.debug( "request.getHeader(\"Range\")=" + request.getHeader("Range" ));
 	        
 	        //处理断点下载
-	        long pos = 0; 
-    		long fileLength=downResult.getFileMetadata().getFilesize();
+    		Long fileLength=downResult.getFileMetadata().getFilesize();
+    		if(null==fileLength) fileLength=0l;
+    		long posStart = 0;
+    		long posEnd=fileLength==0?0:fileLength-1;
     		if (null!=request.getHeader( "Range")) { // 客户端请求的下载的文件块的开始字节
     			response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
                 try {
-                    pos = Long.parseLong(request.getHeader("Range").replaceAll("bytes=", "").replaceAll("-", ""));    
+                	String []rangeStr=request.getHeader("Range").replaceAll("bytes=","").split("-");
+                	posStart = Long.parseLong(rangeStr[0]);
+                	posEnd = Long.parseLong(rangeStr[1]);
                 } catch (NumberFormatException e) {  
-                    pos = 0;    
+                	posStart = 0;  
+                	posEnd=fileLength==0?0:fileLength-1;
                 }
     		}
     		
 	        //response.addHeader( "Content-Disposition" ,  "attachment; filename="  + java.net.URLEncoder.encode(downResult.getFileMetadata().getName(), "UTF-8"));
 	        response.setContentType(downResult.getFileMetadata().getMimetype());
-	        response.setHeader("Content-Length",(fileLength-pos)+"");
+	        response.setHeader("Content-Length",(posEnd-posStart+1)+"");
 	        response.setHeader("Accept-Ranges", "bytes"); 
 	        
-	        String contentRange = new StringBuffer("bytes ").append(pos+"").append("-").append((fileLength - 1)+"").append("/").append(fileLength+"").toString();
+	        String contentRange = new StringBuffer("bytes ").append(posStart+"").append("-").append(posEnd+"").append("/").append(fileLength+"").toString();
 	        response.setHeader("Content-Range", contentRange);
 	        LOGGER.debug("Content-Range:"+contentRange);
 	        
 	        is=downResult.getInputStream();
-	        is.skip(pos);
+	        is.skip(posStart);
 	        
 	        stream = response.getOutputStream();
 	
@@ -369,8 +379,7 @@ public class IframeUploadController {
 		        }
 			}
 	        
-	       
-	        LOGGER.debug("writeSize:"+writeSize+"  pos+writeSize："+(writeSize+pos)+" 实际总大小:"+downResult.getFileMetadata().getFilesize());
+	        LOGGER.debug("writeSize:"+writeSize+",实际总大小:"+downResult.getFileMetadata().getFilesize());
 	        return null;
 	        
     	}catch(FileNotExsitException fe){
