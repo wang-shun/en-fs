@@ -27,6 +27,7 @@ C2SingleUploadFileIframe.prototype = {
     },
     reset:function(){
     	this.$scope.formObj.find("input[c2-single-upload-file-iframe]").val("");
+    	this.$dom.ace_file_input('reset_input_ui');
     },
     submit:function(scEvent,erEvent){
     	this.$scope.upload(scEvent,erEvent);
