@@ -87,7 +87,7 @@ public class IframeUploadController {
             throws IOException {
     	
     	HashMap<String,Object> resultObj=new HashMap<String, Object>();
-    	
+    	boolean isFail=false;
     	try{
 
     		UploadProcess uploadProcess=(UploadProcess)this.getProcessInstance(process);
@@ -128,6 +128,7 @@ public class IframeUploadController {
         		reData.put("errorMsg","单个文件大小超过限制！");
         		reData.put("files",validateList);
         		resultObj.put("data",reData);
+        		isFail=true;
         	}else{
             	@SuppressWarnings("unchecked")
 				Result uploadResult=uploadProcess.processUpload(fileInputList,request.getParameterMap());
@@ -140,10 +141,11 @@ public class IframeUploadController {
     		HashMap<String,Object> reData=new HashMap<String, Object>();
     		reData.put("errorMsg",e1.getMessage());
     		resultObj.put("data",reData);
+    		isFail=true;
     	}
     	
     	//处理平台web控件上传
-		if(StringUtils.isNotEmpty(controlId)){
+		if(StringUtils.isNotEmpty(controlId)||StringUtils.isNotEmpty(instanceId)){
 			
     		String jsonStr=JSON.toJSONString(resultObj,SerializerFeature.DisableCircularReferenceDetect);
     		
@@ -153,8 +155,13 @@ public class IframeUploadController {
     			filter="[name='instanceId'][value='"+instanceId+"']";
     		}
     		
-    		return new ResponseFactory().createResponseBodyHtml("<script type=\"text/javascript\">" +
-    				"var scope=(\""+filter+"\").scope().successCallback("+jsonStr+");</script>");
+    		if(isFail){
+        		return new ResponseFactory().createResponseBodyHtml("<script type=\"text/javascript\">" +
+        				"var scope=(\""+filter+"\").scope().errorCallback("+jsonStr+");</script>");
+    		}else{
+        		return new ResponseFactory().createResponseBodyHtml("<script type=\"text/javascript\">" +
+        				"var scope=(\""+filter+"\").scope().successCallback("+jsonStr+");</script>");
+    		}
     		
 		}else{
 			return new ResponseFactory().createResponseBodyJSONObject(resultObj);
