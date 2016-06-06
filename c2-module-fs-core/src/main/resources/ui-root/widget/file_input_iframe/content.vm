@@ -4,7 +4,7 @@
 	    #end
 	    #set ($marginLeft= $tools.parseInt($!{param.lableWidth})+10)
 	    <div style="margin-left: ${marginLeft}px;">
-	    			<input c2-single-upload-file-iframe id="${ele.id}" name="${ele.id}" type="file" process="${param.process}" max-size="${param.maxSize}" 
+	    			<div c2-single-upload-file-iframe id="${ele.id}" name="${ele.id}" process="${param.process}" max-size="${param.maxSize}" 
 					#attr("ng-disabled='${param.disabled}'" $!{param.disabled})
 					#attr("target-url='$param.url'" $!{param.url})
 					#attr("on-success='functions.${param.onSuccess}'" $!{param.onSuccess})

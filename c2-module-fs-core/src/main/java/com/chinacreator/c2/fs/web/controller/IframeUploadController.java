@@ -154,8 +154,8 @@ public class IframeUploadController {
     		}
     		
     		return new ResponseFactory().createResponseBodyHtml("<script type=\"text/javascript\">" +
-    				"var scope=parent.angular.element(\""+filter+"\").scope();" +
-    				"scope.$view."+controlId+".$scope.successCallback("+jsonStr+");</script>");
+    				"var scope=(\""+filter+"\").scope().successCallback("+jsonStr+");</script>");
+    		
 		}else{
 			return new ResponseFactory().createResponseBodyJSONObject(resultObj);
 		}

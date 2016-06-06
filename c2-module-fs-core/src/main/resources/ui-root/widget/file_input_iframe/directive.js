@@ -45,19 +45,17 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
  	},
     controller: function($scope,$attrs){
     	
-    	var directiveId=$attrs.id;
+    	$scope.instanceId=$attrs.id+"_"+new Date().getTime()+"_"+Math.floor((Math.random()*10000000000));
+
     	$scope.showRemoveButton = angular.isDefined($attrs.showRemoveButton);
     	
     	$scope.uploading=false;
     	
     	$scope.successCallback=function(data){
-    		
-    		var form=FormContainerFactory.findForm($scope);
-    		var groupDom=form.mainForm.getDom().find("#formGroup-"+directiveId);
-    		
+
     		$scope.uploading=false;
     		
-    		groupDom.find(".message-loading-overlay").remove();
+    		$scope.widgetContainer.find(".message-loading-overlay").remove();
     		
     		if($scope.successEvent){
     			$scope.successEvent(data.data);
@@ -69,13 +67,10 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
     	}
     	
     	$scope.errorCallback=function(data){
-    		
-    		var form=FormContainerFactory.findForm($scope);
-    		var groupDom=form.mainForm.getDom().find("#formGroup-"+directiveId);
-    		
+
     		$scope.uploading=false;
     		
-    		groupDom.find(".message-loading-overlay").remove();
+    		$scope.widgetContainer.find(".message-loading-overlay").remove();
     		
     		if($scope.errorEvent){
     			$scope.errorEvent(data.data);
@@ -87,12 +82,12 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
     	}
     	
     	$scope.upload=function(scEvent,erEvent){
-    		var form=FormContainerFactory.findForm($scope);
-    		var fileDom=form.mainForm.getDom().find("input[c2-single-upload-file-iframe][name="+directiveId+"]");
+    		
+    		var fileDom=$scope.widgetContainer.find("input[type='file']");
     		
     		//提交前验证
     		if(fileDom.length>1){
-    			Messenger.post({type:'error',message:"【"+directiveId+"】控件ID冲突，请检查表单控件ID唯一性！"});
+    			Messenger.post({type:'error',message:"【"+$attrs.id+"】控件ID冲突，请检查表单控件ID唯一性！"});
     			return;
     		}
     		
@@ -107,15 +102,14 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
 			}
 
 			//准备动态参数
-	    	var c2SingleUploadFileIframe=form[directiveId];
-			if(c2SingleUploadFileIframe.params instanceof Object){
-				for (name in c2SingleUploadFileIframe.params) {
-					if(c2SingleUploadFileIframe.params.hasOwnProperty(name)){
+			if($scope.c2SingleUploadFileIframe.params instanceof Object){
+				for (name in $scope.c2SingleUploadFileIframe.params) {
+					if($scope.c2SingleUploadFileIframe.params.hasOwnProperty(name)){
 						var f=$scope.formObj.find("#"+name);
 						if(f.length>0){
-							f.val(c2SingleUploadFileIframe.params[name]);	
+							f.val($scope.c2SingleUploadFileIframe.params[name]);	
 						}else{
-							$scope.formObj.append("<input type=\"hidden\" id=\""+name+"\" name=\""+name+"\" value=\""+c2SingleUploadFileIframe.params[name]+"\">");
+							$scope.formObj.append("<input type=\"hidden\" id=\""+name+"\" name=\""+name+"\" value=\""+$scope.c2SingleUploadFileIframe.params[name]+"\">");
 						}
 					}
 				}
@@ -131,21 +125,41 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
     		
     		$scope.uploading=true;
     		
-    		var groupDom=form.mainForm.getDom().find("#formGroup-"+directiveId);
-    		groupDom.append("<div style=\"filter: alpha(opacity=50); opacity: 0.5; background-color: #000;\" class=\"message-loading-overlay\"><i class=\"fa-spin ace-icon fa fa-spinner orange2 bigger-160\"></i></div>");
+    		$scope.widgetContainer.append("<div style=\"filter: alpha(opacity=50); opacity: 0.5; background-color: #000;\" class=\"message-loading-overlay\"><i class=\"fa-spin ace-icon fa fa-spinner orange2 bigger-160\"></i></div>");
     		$scope.formObj.submit();
     	}
 	},
+	template:"<span id=\"content\"></span>",
  	compile:function($element,$attrs){
  		return function($scope,$element,$attrs){
  			
- 			var instanceId=$attrs.id+"_"+Math.random();
+ 			//为控件打上实例标记
+ 			$element.attr("data-instanceid",$scope.instanceId);
+ 			
  			var submitUrl="iframefile/"+$attrs.process+"/upload";
  			var iframeObj;
  			var formObj;
  			
+ 			
  			var form=FormContainerFactory.findForm($scope);
-            form[$attrs.id] = new C2SingleUploadFileIframe($scope, $element,$attrs);
+ 			
+ 			//如果同一个表单中存在多个，[$view.控件id]变为数组类型
+ 			var widgetHandle=form[$attrs.id];
+ 			$scope.c2SingleUploadFileIframe=new C2SingleUploadFileIframe($scope, $element,$attrs);
+ 			
+ 			if(widgetHandle){
+ 				if($.isArray(widgetHandle)){
+ 					widgetHandle.push($scope.c2SingleUploadFileIframe);
+ 				}else{
+ 					var arr=new Array();
+ 					arr.push(widgetHandle);
+ 					arr.push($scope.c2SingleUploadFileIframe);
+ 					form[$attrs.id]=arr;
+ 				}
+ 			}else{
+ 				form[$attrs.id] =$scope.c2SingleUploadFileIframe;
+ 			}
+
             $scope.autoSubmit=$attrs.autoSubmit;
             
  			var opts={
@@ -162,39 +176,44 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
         	if(angular.isDefined($scope.deny)){
         		opts.denyExt=angular.fromJson($scope.deny);
         	}
-        	$element.ace_file_input(opts).on('file.error.ace',function(){
-        		Messenger.error("不支持上传该类型的文件，只支持: "+$scope.allow);
-        	});
         	
- 			var iframeId="upload_iframe_"+$attrs.id;
- 			var formId="upload_form_"+$attrs.id;
-    		if($element.parent().find("#"+iframeId).length>0){
-    			iframeObj=$element.parent().find("#"+iframeId);
+ 			var iframeId="upload_iframe_"+$scope.instanceId;
+ 			var formId="upload_form_"+$scope.instanceId;
+    		if($element.find("#content #"+iframeId).length>0){
+    			iframeObj=$element.find("#content #"+iframeId);
     		}else{
-    			iframeObj=$("<iframe name=\""+iframeId+"\" id=\""+iframeId+"\" style=\"display:none\"></iframe>");
-    			$element.after(iframeObj);
+    			iframeObj=$element.find("#content").append("<iframe name=\""+iframeId+"\" id=\""+iframeId+"\" style=\"display:none\"></iframe>");
     		}
     		
-    		if($element.parent().find("#"+formId).length>0){
-    			formObj=$element.parent().find("#"+formId);
+    		
+    		if($element.find("#content #"+formId).length>0){
+    			formObj=$element.find("#content #"+formId);
     			formObj.empty();
     		}else{
     			formObj=$("<form action=\""+submitUrl+"\" id=\""+formId+"\" name=\""+formId+"\" encType=\"multipart/form-data\"  method=\"post\" target=\""+iframeId+"\">" +
     					"</form>");
-    			$element.after(formObj);
-    			formObj.append($element);
+    			$element.find("#content").append(formObj);
     		}
     		
+    		var fileElement=$("<input name=\"file_"+$scope.instanceId+"+\" id=\"file_"+$scope.instanceId+"+\" type=\"file\"/>");
+    		formObj.append(fileElement);
+
+    		fileElement.ace_file_input(opts).on('file.error.ace',function(){
+        		Messenger.error("不支持上传该类型的文件，只支持: "+$scope.allow);
+        	});
+    		
 			formObj.append("<input type=\"hidden\" name=\"controlId\" value=\""+$attrs.id+"\">");
-			formObj.append("<input type=\"hidden\" name=\"instanceId\" value=\""+instanceId+"\">");
+			formObj.append("<input type=\"hidden\" name=\"instanceId\" value=\""+$scope.instanceId+"\">");
 			
 			if(!angular.isUndefined($attrs.maxSize)){
 				formObj.append("<input type=\"hidden\" id=\"maxSize\" name=\"maxSize\" value=\""+$attrs.maxSize+"\">");
 			}
     		$scope.iframeObj=iframeObj;
     		$scope.formObj=formObj;
-			
-        	$element.bind('change', function(evt) {
+    		
+    		$scope.widgetContainer=$element;
+    		
+    		fileElement.bind('change', function(evt) {
         		
         		//提交前验证
     			if($(this).val()==undefined||$(this).val()==""){
@@ -230,7 +249,7 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
     		});
     		if (('ontouchstart' in window) ||
     				(navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
-    				$element.bind('touchend', function(e) {
+    				fileElement.bind('touchend', function(e) {
         				e.preventDefault();
         				e.target.click();
         			});
