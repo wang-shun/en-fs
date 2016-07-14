@@ -9,7 +9,8 @@ C2SingleUploadFileIframe.prototype = {
 	getDom:function(){
 		return this.$dom;
 	},
-    upload: function (scEvent,erEvent){
+    upload: function (params,scEvent,erEvent){
+		this.params=params;
         this.$scope.upload(scEvent,erEvent);
     },
     getValue:function(){
@@ -29,9 +30,10 @@ C2SingleUploadFileIframe.prototype = {
     	this.$scope.formObj.find("input[c2-single-upload-file-iframe]").val("");
     	this.$dom.ace_file_input('reset_input_ui');
     },
-    submit:function(scEvent,erEvent){
-    	this.$scope.upload(scEvent,erEvent);
-    }
+	submit: function (params,scEvent,erEvent){
+		this.params=params;
+        this.$scope.upload(scEvent,erEvent);
+    },
 };
 
 directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFactory','Messenger','$timeout',

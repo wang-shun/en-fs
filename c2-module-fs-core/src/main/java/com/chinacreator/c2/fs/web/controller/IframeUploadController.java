@@ -157,10 +157,10 @@ public class IframeUploadController {
     		
     		if(isFail){
         		return new ResponseFactory().createResponseBodyHtml("<script type=\"text/javascript\">" +
-        				"var scope=(\""+filter+"\").scope().errorCallback("+jsonStr+");</script>");
+        				"parent.angular.element(\""+filter+"\").scope().errorCallback("+jsonStr+");</script>");
     		}else{
         		return new ResponseFactory().createResponseBodyHtml("<script type=\"text/javascript\">" +
-        				"var scope=(\""+filter+"\").scope().successCallback("+jsonStr+");</script>");
+        				"parent.angular.element(\""+filter+"\").scope().successCallback("+jsonStr+");</script>");
     		}
     		
 		}else{
