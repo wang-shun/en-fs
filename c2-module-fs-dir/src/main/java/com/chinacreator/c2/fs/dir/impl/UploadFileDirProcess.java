@@ -2,8 +2,11 @@ package com.chinacreator.c2.fs.dir.impl;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.chinacreator.c2.fs.DownResult;
 import com.chinacreator.c2.fs.FileInput;
@@ -24,10 +27,21 @@ import com.chinacreator.c2.ioc.ApplicationContextManager;
  * @author hushowly
  */
 public class UploadFileDirProcess extends UploadProcess{
-
+	
     private FileServer dirFileServer;
     
-    public UploadFileDirProcess(String processName) {
+    private boolean fileNameEncoding=true;  //默认开启，如果兼容旧代码前台作了编码处理请配置为false
+    
+    
+	public boolean isFileNameEncoding() {
+		return fileNameEncoding;
+	}
+
+	public void setFileNameEncoding(boolean fileNameEncoding) {
+		this.fileNameEncoding = fileNameEncoding;
+	}
+
+	public UploadFileDirProcess(String processName) {
 		super(processName);
 	}
 
@@ -60,6 +74,14 @@ public class UploadFileDirProcess extends UploadProcess{
 					FileMetadata fileMetadata=fileInput.getFileMetadata();
 					fileMetadata=server.add(is,fileMetadata);
 					//将保存后的附件信息添加到结果集中
+					
+					//附件保存完后，将文件名特殊字符统一做编码，否则无法下载
+					if(fileNameEncoding){
+						String[] items=fileMetadata.getPath().split("/");
+						if(items.length>0) items[items.length-1]=URLEncoder.encode(items[items.length-1],"UTF-8");
+						fileMetadata.setPath(StringUtils.join(items,"/"));
+					}
+					
 					FileUploadResult fr=new FileUploadResult(HttpType.SUCCESS.ordinal(),"成功",fileMetadata.getName(),fileMetadata.getPath(),Constants.IFRAME_FILE_PREFIX+this.getProcessName()+"/"+fileMetadata.getPath());
 					fr.setFilesize(fileMetadata.getFilesize());
 					fr.setMimetype(fileMetadata.getMimetype());
@@ -71,6 +93,14 @@ public class UploadFileDirProcess extends UploadProcess{
 				InputStream is=fileInput.getInputStream();
 				FileMetadata fileMetadata=fileInput.getFileMetadata();
 				fileMetadata=server.add(is,fileInput.getFileMetadata());
+				
+				//附件保存完后，将文件名特殊字符统一做编码，否则无法下载
+				if(fileNameEncoding){
+					String[] items=fileMetadata.getPath().split("/");
+					if(items.length>0) items[items.length-1]=URLEncoder.encode(items[items.length-1],"UTF-8");
+					fileMetadata.setPath(StringUtils.join(items,"/"));
+				}
+				
 				FileUploadResult fr=new FileUploadResult(HttpType.SUCCESS.ordinal(),"成功",fileMetadata.getName(),fileMetadata.getPath(),Constants.IFRAME_FILE_PREFIX+this.getProcessName()+"/"+fileMetadata.getPath());
 				fr.setFilesize(fileMetadata.getFilesize());
 				fr.setMimetype(fileMetadata.getMimetype());
