@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.chinacreator.c2</groupId>
 			<artifactId>c2-module-fs-parent</artifactId>
-			<version>1.1.9.4</version>
+			<version>1.1.9.5</version>
 	</parent>
 
 	<dependencies>
@@ -33,6 +33,12 @@
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-core</artifactId>
             <version>1.4</version>
+        </dependency>
+        
+    	<dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3</version>
         </dependency>
 	</dependencies>
 

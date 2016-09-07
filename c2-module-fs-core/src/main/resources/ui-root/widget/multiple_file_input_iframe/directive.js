@@ -130,6 +130,13 @@ directives.directive('c2MultipleUploadFileIframe', ['$rootScope','FormContainerF
         					$attrs.maxSize=undefined;
         				}
         				
+        				if(this.files[0].size<=0){
+        					Messenger.error("文件大小不能为空");
+        					$(this).wrap("<form>").parent().get(0).reset()
+        					$(this).unwrap();
+        					return;
+        				}
+        				
         				if($attrs.maxSize&&this.files[0].size>$attrs.maxSize){
         					var sizeLabel=$attrs.maxSize+"字节";
         					if($attrs.maxSize>=1024&&$attrs.maxSize<(1024*1024)){
@@ -137,7 +144,9 @@ directives.directive('c2MultipleUploadFileIframe', ['$rootScope','FormContainerF
         					}else if($attrs.maxSize>=(1024*1024)){
         						var sizeLabel=($attrs.maxSize/(1024*1024))+"MB";
         					}
-        					Messenger.error("单个文件大小不能超过"+sizeLabel);
+        					Messenger.error("文件大小不能超过"+sizeLabel);
+        					$(this).wrap("<form>").parent().get(0).reset()
+        					$(this).unwrap();
         					return;
         				}
         			}

@@ -99,6 +99,7 @@ public class IframeUploadController {
         	//验证文件大小 
         	List<FileInput> fileInputList=new ArrayList<FileInput>();
         	List<FileMetadata> validateList=new ArrayList<FileMetadata>();
+        	
         	String maxSizeStr=request.getParameter("maxSize");
 
         	for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
@@ -109,10 +110,16 @@ public class IframeUploadController {
     			meta.setName(file.getOriginalFilename());
     			meta.setMimetype(file.getContentType());
     			
+    			if(file.getSize()<=0){
+    				validateList.add(meta);
+    				continue;
+    			}
+    			
             	if(StringUtils.isNotEmpty(maxSizeStr)&&StringUtils.isNumeric(maxSizeStr)){
             		int maxSize=Integer.parseInt(maxSizeStr);
             		if(file.getSize()>maxSize){
             			validateList.add(meta);
+            			continue;
             		}
             	}
         
@@ -122,10 +129,9 @@ public class IframeUploadController {
     			fileInputList.add(fileInput);
         	}
         	
-        	
         	if(validateList.size()>0){
         		HashMap<String,Object> reData=new HashMap<String, Object>();
-        		reData.put("errorMsg","单个文件大小超过限制！");
+        		reData.put("errorMsg","单个文件大小超出限制范围！");
         		reData.put("files",validateList);
         		resultObj.put("data",reData);
         		isFail=true;

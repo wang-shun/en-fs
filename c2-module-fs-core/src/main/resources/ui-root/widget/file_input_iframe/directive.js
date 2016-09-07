@@ -230,6 +230,12 @@ directives.directive('c2SingleUploadFileIframe', ['$rootScope','FormContainerFac
     					$attrs.maxSize=undefined;
     				}
     				
+    				if(this.files[0].size<=0){
+    					Messenger.error("文件大小不能为空");
+    					$scope.formObj.parent().find(".remove").click();
+    					return;
+    				}
+    				
     				if($attrs.maxSize&&this.files[0].size>$attrs.maxSize){
     					var sizeLabel=$attrs.maxSize+"字节";
     					if($attrs.maxSize>=1024&&$attrs.maxSize<(1024*1024)){

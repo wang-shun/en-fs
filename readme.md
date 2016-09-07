@@ -15,7 +15,7 @@
 	<dependency>
 		<groupId>com.chinacreator.c2</groupId>
 		<artifactId>c2-module-fs</artifactId>
-		<version>1.1.8</version>
+		<version>1.1.9.5</version>
 	</dependency>
 ```
 
