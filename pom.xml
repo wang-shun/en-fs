@@ -3,19 +3,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-	  <groupId>com.chinacreator.c2</groupId>
-    <artifactId>c2-module-fs-parent</artifactId>
+	  <groupId>en.cool.energy</groupId>
+    <artifactId>en-module-fs-parent</artifactId>
     <version>1.1.9.5</version>
     <name>[C2-Module]:文件系统父模块</name>
     <packaging>pom</packaging>
 
     <modules>
-      <module>c2-module-fs-core</module>
-  		<module>c2-module-fs</module>
-  		<module>c2-module-fs-dir</module>
+      <module>en-module-fs-core</module>
+  		<module>en-module-fs</module>
+  		<module>en-module-fs-dir</module>
   	</modules>
 <distributionManagement>
-        <repository>
+<!--         <repository>
             <id>releases</id>
             <name>deployment</name>
             <url>http://172.16.25.142:80/nexus/content/repositories/releases/</url>
@@ -24,6 +24,6 @@
             <id>snapshots</id>
             <name>deployment</name>
             <url>http://172.16.25.142:80/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
+        </snapshotRepository> -->
     </distributionManagement>
 </project>
