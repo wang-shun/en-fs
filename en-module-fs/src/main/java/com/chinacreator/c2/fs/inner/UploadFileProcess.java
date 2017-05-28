@@ -44,7 +44,7 @@ public class UploadFileProcess extends UploadProcess {
     
 	@Override
 	public Result processUpload(List<FileInput> fileList,
-			Map<String, String[]> params) throws Exception{
+			Map<String, Object> params) throws Exception{
 		
 		Result uploadResult=null;
 		
@@ -91,7 +91,7 @@ public class UploadFileProcess extends UploadProcess {
 	
 	
 	@Override
-	public DownResult processDown(String fpath, Map<String, String[]> params) throws Exception{
+	public DownResult processDown(String fpath, Map<String, Object> params) throws Exception{
 		
 		try{
 			
@@ -123,7 +123,7 @@ public class UploadFileProcess extends UploadProcess {
 
 	
 	@Override
-	public boolean exist(String fpath, Map<String, String[]> params) throws Exception{
+	public boolean exist(String fpath, Map<String, Object> params) throws Exception{
 		
 		if(StringUtils.isEmpty(fpath)){
 			 throw new InvalidFilePathException("文件id不能为空!");
@@ -135,7 +135,7 @@ public class UploadFileProcess extends UploadProcess {
 	
 	
 	@Override
-	public boolean processDelete(String fpath, Map<String, String[]> params) throws Exception{
+	public boolean processDelete(String fpath, Map<String, Object> params) throws Exception{
 		
 		
 		try{

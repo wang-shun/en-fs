@@ -55,7 +55,7 @@ public class UploadFileDirProcess extends UploadProcess{
     
 	@Override
 	public Result processUpload(List<FileInput> fileList,
-			Map<String, String[]> params) throws Exception{
+			Map<String, Object> params) throws Exception{
 
 		Result uploadResult=null;
 		
@@ -117,7 +117,7 @@ public class UploadFileDirProcess extends UploadProcess{
 	
 	
 	@Override
-	public DownResult processDown(String fpath, Map<String, String[]> params) throws Exception{
+	public DownResult processDown(String fpath, Map<String, Object> params) throws Exception{
 		
 		try{
 			
@@ -140,14 +140,14 @@ public class UploadFileDirProcess extends UploadProcess{
 
 	
 	@Override
-	public boolean exist(String fpath, Map<String, String[]> params) throws Exception{
+	public boolean exist(String fpath, Map<String, Object> params) throws Exception{
 		FileServer server = this.getDirFileServer();
 		return server.exsits(fpath);
 	}
 	
 	
 	@Override
-	public boolean processDelete(String fpath, Map<String, String[]> params) throws Exception{
+	public boolean processDelete(String fpath, Map<String, Object> params) throws Exception{
 		try{
 			FileServer server = this.getDirFileServer();
 			return server.delete(fpath,true);

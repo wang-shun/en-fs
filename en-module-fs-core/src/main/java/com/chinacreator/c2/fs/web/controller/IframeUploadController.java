@@ -163,10 +163,10 @@ public class IframeUploadController {
     		
     		if(isFail){
         		return new ResponseFactory().createResponseBodyHtml("<script type=\"text/javascript\">" +
-        				"parent.angular.element(\""+filter+"\").scope().errorCallback("+jsonStr+");</script>");
+        				"window.parent."+instanceId+"_errorCallback("+jsonStr+");</script>");
     		}else{
         		return new ResponseFactory().createResponseBodyHtml("<script type=\"text/javascript\">" +
-        				"parent.angular.element(\""+filter+"\").scope().successCallback("+jsonStr+");</script>");
+        				"window.parent."+instanceId+"_successCallback("+jsonStr+");</script>");
     		}
     		
 		}else{

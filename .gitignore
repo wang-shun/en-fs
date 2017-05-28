@@ -1,0 +1,9 @@
+en-module-fs/.settings/
+en-module-fs/.project
+en-module-fs-core/.settings/org.eclipse.wst.common.project.facet.core.xml
+en-module-fs-core/.settings/org.eclipse.wst.validation.prefs
+en-module-fs-core/.classpath
+en-module-fs-core/.settings/
+*.classpath
+*.project
+en-module-fs-dir/.settings/
